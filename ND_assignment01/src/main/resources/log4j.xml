@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appenders -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- Application Loggers -->
+	<logger name="com.nd.assignment">
+		<level value="debug" /> <!-- info -> debug -->
+	</logger>
+	
+
+	
+ 		<Logger name="java.sql" level="DEBUG" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+        <Logger name="egovframework" level="DEBUG" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+          log SQL with timing information, post execution
+        <Logger name="jdbc.sqltiming" level="DEBUG" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+        <Logger name="org.springframework" level="DEBUG" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+        <Logger name="jdbc.resultsettable" additivity="false"> 
+            <level value="info" /> 
+            <appender-ref ref="console-log4jdbc" />
+       </Logger>
+
+
+	
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.beans">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.context">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="info" />
+	</logger>
+	
+	
+	
+	
+    <!-- 추가 -->
+    <logger name="org.ibatis">
+       <level value="info"/>
+    </logger>
+    
+    <logger name="java.sql">
+       <level value="info"/>
+    </logger>
+
+	
+
+	<!-- Root Logger  (수정) root 태그는 전역설정 logger입니다.-->
+	<root>
+<!-- 		<priority value="warn" /> -->
+		<priority value="info"/>
+		<appender-ref ref="console" />
+	</root>
+	
+	<!-- 
+      log4j log level
+      -Level.FATAL : 치명적인 에러
+      -Level.ERROR : 에러
+      -Level.WARN :  경고
+      -Level.INFO :  정보
+      -Level.DEBUG : 디버깅 정보
+      -Level.TRACE : DEBUG + @(상세정보)
+   
+      >>> 설정에 따라 해당하는 경도에 따른 레벨의 메시지를 띄운다
+       ex) Level.FATAL 치명적인 에러이외에 띄우지 않는다
+           Level.TRACE 가장 많은 정보와 빈번한 정보를 띄운다
+    -->
+	
+	
+</log4j:configuration>

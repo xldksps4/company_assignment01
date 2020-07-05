@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="totalstaff">
+
+  
+  <resultMap type="totalstaffDto" id="totalstaffMap">
+   <result property="skillcode" column="skill_code"/>
+   <result property="skillname" column="skill_name"/>
+   <result property="departmentcode" column="department_code"/>
+   <result property="departmentname" column="department_name"/>
+   <result property="schoolcode" column="school_code"/>
+   <result property="schoolname" column="school_name"/>
+   <result property="staffno" column="staff_no"/>
+   <result property="staffname" column="staff_name"/>
+   <result property="staffgender" column="staff_gender"/>
+   <result property="juminno" column="jumin_no"/>
+   <result property="graduateday" column="graduate_day"/>
+   <result property="staffskillno" column="staff_skill_no"/>
+  </resultMap>
+  
+	<!-- 페이징 : 게시물 개수 -->
+	<select id="getTotalBoard" parameterType="totalstaffDto" resultType="int">
+		SELECT count(*)
+		FROM (SELECT c_skill.*, c_depart.*, c_school.*, s_taff.staff_no, s_taff.staff_name, s_taff.staff_gender, s_taff.jumin_no, s_taff.graduate_day, s_skill.staff_skill_no
+			FROM code_skill c_skill, code_department c_depart, code_school c_school, staff s_taff, staff_skill s_skill
+			WHERE s_taff.department_code = c_depart.department_code
+			AND s_taff.school_code = c_school.school_code
+			AND s_taff.staff_no = s_skill.staff_no
+			AND s_skill.skill_code = c_skill.skill_code) A 
+		<trim prefix = "WHERE" prefixOverrides = "AND">
+			<if test='staffname != "" and staffname != null'>
+				AND  A.staff_name LIKE '%' || #{staffname} || '%'
+			</if>
+			<if test='staffgender != "" and staffgender != null'>
+				AND A.staff_gender = #{staffgender}
+			</if>
+			<if test='departmentname != "" and departmentname != null'>
+				AND A.department_name = #{departmentname}
+			</if>
+			<if test='schoolname != "" and schoolname != null'>
+				AND A.school_name = #{schoolname}
+			</if>
+			<if test='skillnameList != null'>
+				AND A.skill_name IN 
+				<foreach collection="skillnameList" item="skillnameOne" open="(" separator="," close=")"> <!-- ==> (1,2,3) -->
+					#{skillnameOne}					
+				</foreach>
+			</if>
+			<if test='graduatedayList != "" and graduatedayList != null'>
+				<foreach collection="graduatedayList" item="graduatedayOne">
+					<if test = 'index = 0'>
+						AND A.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+					</if>
+					<if test = 'index = 1'>
+						AND A.graduate_day  <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+					</if>
+				</foreach>
+			</if>
+	   	</trim>
+	</select>
+
+
+	<!-- 01.  -->
+	<select id="boardList" parameterType="totalstaffDto" resultMap="totalstaffMap">
+		SELECT X.RN, X.staff_no, X.staff_name, X.staff_gender, X.department_name, X.graduate_day
+		FROM(   
+			SELECT ROWNUM as RN, O.staff_no, O.staff_name, O.staff_gender, O.department_name, O.graduate_day
+			FROM(SELECT A.staff_no, A.staff_name, A.staff_gender, A.department_name, A.graduate_day, A.skill_name
+				FROM (SELECT c_skill.*, c_depart.*, c_school.*, s_taff.staff_no, s_taff.staff_name, s_taff.staff_gender, s_taff.jumin_no, s_taff.graduate_day, s_skill.staff_skill_no
+				      FROM code_skill c_skill, code_department c_depart, code_school c_school, staff s_taff, staff_skill s_skill
+				      WHERE s_taff.department_code = c_depart.department_code
+				      AND s_taff.school_code = c_school.school_code
+				      AND s_taff.staff_no = s_skill.staff_no
+				      AND s_skill.skill_code = c_skill.skill_code) A 
+			    <trim prefix = "WHERE" prefixOverrides = "AND">
+				     <if test='staffname != "" and staffname != null'>
+						AND  A.staff_name LIKE '%' || #{staffname} || '%'
+					</if>
+					<if test='staffgender != "" and staffgender != null'>
+						AND A.staff_gender = #{staffgender}
+					</if>
+					<if test='departmentname != "" and departmentname != null'>
+						AND A.department_name = #{departmentname}
+					</if>
+					<if test='schoolname != "" and schoolname != null'>
+						AND A.school_name = #{schoolname}
+					</if>
+					<if test='skillnameList != null'>
+						AND A.skill_name IN 
+						<foreach collection="skillnameList" item="skillnameOne" open="(" separator="," close=")"> <!-- ==> (1,2,3) -->
+							#{skillnameOne}					
+						</foreach>
+					</if>
+					<if test='graduatedayList != "" and graduatedayList != null'>
+						<foreach collection="graduatedayList" item="graduatedayOne">
+							<if test = 'index = 0'>
+								AND A.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+							</if>
+							<if test = 'index = 1'>
+								AND A.graduate_day  <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+							</if>
+						</foreach>
+					</if>
+	      		</trim>
+	      		ORDER BY A.staff_no DESC) O
+			WHERE ROWNUM <![CDATA[<=]]> #{endBoardNo}) X
+		WHERE X.RN <![CDATA[>=]]> #{startBoardNo}
+	</select>
+  
+  
+</mapper>
