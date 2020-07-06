@@ -20,13 +20,19 @@
 
 
 <style type="text/css">
-h1 {
-	text-align: center;
-}
 
-table {
-	width: 100%
-}
+table {width: 100%}
+
+ul {text-align: center;}
+
+ul li{
+	list-style-type: none; 
+/* 	float: left; */
+	display: inline;
+ 	outline: 1px;
+/* 	margin-left: 20px; */
+	}
+
 </style>
 
 
@@ -225,7 +231,7 @@ foreach마다 trim 따로.
                                 <td class="staff-department">${totalDto.departmentname }</td>
                                 <td class="staff-graduated">${totalDto.graduateday }</td>
                                 <td class="board-go" style="text-align: center">
-                                	<input type="button" value="수정 /삭제" onclick="" />
+                                	<input type="button" value="수정 /삭제" onclick="boardUpdate(${totalDto.staffno})" />
                                 </td>
                             </tr>
                         </c:forEach>
@@ -251,7 +257,7 @@ foreach마다 trim 따로.
                <!-- << : 10 페이지 뒤로-->
                <c:if test="${pagination.startPage >= 11 }">
                   <li onClick="paging()">
-                     <a href="BOARD_goboardlist.do?currentPage=${pagination.currentPage -10}" aria-label="Previous">
+                     <a href="goboardlist.do?currentPage=${pagination.currentPage -10}" aria-label="Previous">
                         <span aria-hidden="true">&lt;&lt;</span>
                      </a>
                   </li>
@@ -260,7 +266,7 @@ foreach마다 trim 따로.
                <!-- < -->
                <c:if test="${pagination.currentPage ne 1 }">
                   <li onClick="paging(${pagination.prevPage })">
-                     <a href="BOARD_goboardlist.do?currentPage=${pagination.prevPage }" aria-label="Previous">
+                     <a href="goboardlist.do?currentPage=${pagination.prevPage }" aria-label="Previous">
                         <span aria-hidden="true">&nbsp;&lt;&nbsp;</span>
                      </a>
                   </li>

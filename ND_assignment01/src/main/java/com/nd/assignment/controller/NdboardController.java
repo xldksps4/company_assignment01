@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nd.assignment.common.all.pagenation.OraclePagination;
@@ -26,7 +27,7 @@ public class NdboardController {
 	//리스트 페이지로 가기
 	@RequestMapping(value = "/goboardlist.do")
 	public String goBoardList(Model model, TotalStaffDto totalstaffDto, @RequestParam(defaultValue = "1") int currentPage) {
-		logger.info("[Controller]____goBoardList TotalStaffDto >>>>>>>> : " + totalstaffDto);
+		logger.info("[Controller]____goBoardList TotalStaffDto >>>> : " + totalstaffDto);
 		
 		//게시물 개수
 		int totalBoard = totalstaffBiz.getTotalBoard(totalstaffDto);
@@ -63,9 +64,30 @@ public class NdboardController {
 	
 	
 	//글 수정페이지로 가기
+	@RequestMapping(value = "/goboardupdate.do", method = RequestMethod.GET)
+	public String goBoardUpdate(Model model, @RequestParam("staffno") int staffno, TotalStaffDto totalstaffDto){
+		logger.info("[Controller]____goBoardUpdate staffno >>>> "+ staffno);
+		
+//		totalstaffDto = totalstaffBiz.();
+//		model.addAttribute("totalList", totalstaffDto);
+		
+		return "staff_updel_form";
+	}
 	
 	//글 수정 완료
 	
 	//글 삭제 완료
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

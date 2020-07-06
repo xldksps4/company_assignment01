@@ -11,13 +11,27 @@ curPage = $('.paging-focus').text();
 /*---------- 페이징 : paging func ----------*/
 //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa 미사용, 수정필요
 function paging(curPage) {
-	location.href = "BOARD_boardList.do?curPage=" + curPage;
+	location.href = "goboardlist.do?curPage=" + curPage;
 }
+
+
+
+
+
+
+
+
+/*---------- 상세글보기 : boardDetail func ----------*/
+function boardUpdate(staffno) {
+//	var curPage = document.getElementsByClassName('paging-focus').text;  // 쿼리 : $('.paging-focus').text();
+	location.href='goboardupdate.do?staffno=' + staffno; //+ '&curPage=' + curPage;
+}
+
 
 /*---------- 상세글보기 : boardDetail func ----------*/
 function boardDetail(sdbseq) {
 //	var curPage = document.getElementsByClassName('paging-focus').text;  // 쿼리 : $('.paging-focus').text();
-	location.href='BOARD_boarddetail.do?sdbseq=' + sdbseq; //+ '&curPage=' + curPage;
+	location.href='goboard          .do?sdbseq=' + sdbseq; //+ '&curPage=' + curPage;
 }
 
 
@@ -32,7 +46,7 @@ function search() {
 	var keyword = $('#keyword').val();
 	
 	// controller
-	location.href='boardList.do?category=' + category + '&keyword=' + keyword;
+	location.href='goboardlist.do?category=' + category + '&keyword=' + keyword;
 }
 
 /*---------- 검색(엔터치면 입력) : onKeyDown func ----------*/
