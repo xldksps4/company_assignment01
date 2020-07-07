@@ -18,30 +18,29 @@
    <result property="staffskillno" column="staff_skill_no"/>
   </resultMap>
   
-	<!-- 페이징 : 게시물 개수 -->
-	<select id="getTotalBoard" parameterType="totalstaffDto" resultType="int">
-		SELECT count(*)
-		FROM (SELECT c_skill.*, c_depart.*, c_school.*, s_taff.staff_no, s_taff.staff_name, s_taff.staff_gender, s_taff.jumin_no, s_taff.graduate_day, s_skill.staff_skill_no
-			FROM code_skill c_skill, code_department c_depart, code_school c_school, staff s_taff, staff_skill s_skill
-			WHERE s_taff.department_code = c_depart.department_code
-			AND s_taff.school_code = c_school.school_code
-			AND s_taff.staff_no = s_skill.staff_no
-			AND s_skill.skill_code = c_skill.skill_code) A 
+  <select id="getTotalBoard" parameterType="totalstaffDto" resultType="int">
+	SELECT count (*)
+	FROM (  SELECT SF.STAFF_NO
+			FROM STAFF SF 
+			LEFT OUTER JOIN STAFF_SKILL SS ON SF.STAFF_NO = SS.STAFF_NO
+			JOIN CODE_SKILL CS ON SS.SKILL_CODE = CS.SKILL_CODE
+			LEFT OUTER JOIN CODE_DEPARTMENT CDM ON SF.DEPARTMENT_CODE = CDM.DEPARTMENT_CODE
+			LEFT OUTER JOIN CODE_SCHOOL CSL ON SF.SCHOOL_CODE = CSL.SCHOOL_CODE
 		<trim prefix = "WHERE" prefixOverrides = "AND">
 			<if test='staffname != "" and staffname != null'>
-				AND  A.staff_name LIKE '%' || #{staffname} || '%'
+				AND SF.staff_name LIKE '%' || #{staffname} || '%'
 			</if>
 			<if test='staffgender != "" and staffgender != null'>
-				AND A.staff_gender = #{staffgender}
+				AND SF.staff_gender = #{staffgender}
 			</if>
 			<if test='departmentname != "" and departmentname != null'>
-				AND A.department_name = #{departmentname}
+				AND CDM.department_name = #{departmentname}
 			</if>
 			<if test='schoolname != "" and schoolname != null'>
-				AND A.school_name = #{schoolname}
+				AND CSL.school_name = #{schoolname}
 			</if>
 			<if test='skillnameList != null'>
-				AND A.skill_name IN 
+				AND CS.skill_name IN 
 				<foreach collection="skillnameList" item="skillnameOne" open="(" separator="," close=")"> <!-- ==> (1,2,3) -->
 					#{skillnameOne}					
 				</foreach>
@@ -49,19 +48,19 @@
 			<if test='graduatedayList != "" and graduatedayList != null'>
 				<foreach collection="graduatedayList" item="graduatedayOne">
 					<if test = 'index = 0'>
-						AND A.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+						AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
 					</if>
 					<if test = 'index = 1'>
-						AND A.graduate_day  <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+						AND SF.graduate_day  <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
 					</if>
 				</foreach>
 			</if>
 	   	</trim>
+	   GROUP BY sf.STAFF_NO)
 	</select>
 
-
-	<!-- 01.  -->
-	<select id="boardList" parameterType="totalstaffDto" resultMap="totalstaffMap">
+	<!-- 01. exist duplicate -->
+	<select id="boardList_before" parameterType="totalstaffDto" resultMap="totalstaffMap">
 		SELECT X.RN, X.staff_no, X.staff_name, X.staff_gender, X.department_name, X.graduate_day
 		FROM(   
 			SELECT ROWNUM as RN, O.staff_no, O.staff_name, O.staff_gender, O.department_name, O.graduate_day
@@ -107,5 +106,69 @@
 		WHERE X.RN <![CDATA[>=]]> #{startBoardNo}
 	</select>
   
+  
+	<!-- 01. erase duplicate -->
+	<select id="boardList" parameterType="totalstaffDto" resultMap="totalstaffMap">
+		SELECT X.RN, X.staff_no, X.staff_name, X.staff_gender, X.department_name, X.graduate_day		
+		FROM(	SELECT ROWNUM as RN, O.staff_no, O.staff_name, O.staff_gender, O.department_name, O.graduate_day			
+			FROM(	SELECT SF.staff_no, SF.staff_name, SF.staff_gender, CDM.department_name, SF.graduate_day
+				    FROM staff SF
+				    LEFT OUTER JOIN STAFF_SKILL SS ON SF.STAFF_NO = SS.STAFF_NO
+					JOIN CODE_SKILL CS ON SS.SKILL_CODE = CS.SKILL_CODE
+					left OUTER JOIN CODE_DEPARTMENT CDM ON SF.DEPARTMENT_CODE = CDM.DEPARTMENT_CODE
+					left OUTER JOIN CODE_SCHOOL CSL ON SF.SCHOOL_CODE = CSL.SCHOOL_CODE
+	   			<trim prefix = "WHERE" prefixOverrides = "AND">
+					<if test='staffname != "" and staffname != null'>
+						AND  SF.staff_name LIKE '%' || #{staffname} || '%'
+					</if>
+					<if test='staffgender != "" and staffgender != null'>
+						AND SF.staff_gender = #{staffgender}
+					</if>
+					<if test='departmentname != "" and departmentname != null'>
+						AND CDM.department_name = #{departmentname}
+					</if>
+					<if test='schoolname != "" and schoolname != null'>
+						AND CSL.school_name = #{schoolname}
+					</if>
+					<if test='skillnameList != null'>
+						AND CS.skill_name IN 
+						<foreach collection="skillnameList" item="skillnameOne" open="(" separator="," close=")"> <!-- ==> (1,2,3) -->
+							#{skillnameOne}					
+						</foreach>
+					</if>
+					<if test='graduatedayList != "" and graduatedayList != null'>
+						<foreach collection="graduatedayList" item="graduatedayOne">
+							<if test = 'index = 0'>
+								AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+							</if>
+							<if test = 'index = 1'>
+								AND SF.graduate_day  <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+							</if>
+						</foreach>
+					</if>
+	      		</trim>
+	      		GROUP BY SF.STAFF_NO, SF.staff_name, SF.staff_gender, CDM.department_name, SF.graduate_day
+	      		ORDER BY SF.staff_NO DESC) O
+			WHERE ROWNUM <![CDATA[<=]]> #{endBoardNo}) X
+		WHERE X.RN <![CDATA[>=]]> #{startBoardNo}
+	</select>  
+  
+  	<select id="selectOne" parameterType="int" resultMap="totalstaffMap" >
+		SELECT *
+		FROM STAFF SF 
+		LEFT OUTER JOIN STAFF_SKILL SS ON SF.STAFF_NO = SS.STAFF_NO
+	   	JOIN CODE_SKILL CS ON SS.SKILL_CODE = CS.SKILL_CODE
+		LEFT OUTER JOIN CODE_DEPARTMENT CD ON SF.DEPARTMENT_CODE = CD.DEPARTMENT_CODE
+		LEFT OUTER JOIN CODE_SCHOOL CSL ON SF.SCHOOL_CODE = CSL.SCHOOL_CODE
+		WHERE SF.STAFF_NO = #{staffno}
+  	</select>
+  
+  	<insert id="insertInfo" parameterType="totalstaffDto">
+  	
+  	</insert>
+  	
+  	<update id="updateInfo" parameterType="totalstaffDto">
+
+  	</update>
   
 </mapper>

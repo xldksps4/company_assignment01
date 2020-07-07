@@ -30,6 +30,13 @@ public class TotalStaffBizImpl implements TotalStaffBiz {
 		logger.info("[BizImpl]____boardList입니다. dto: "+dto);
 		return totalstaffDao.boardList(dto);
 	}
+
+	@Override
+	public TotalStaffDto selectOne(int staffno) {
+		logger.info("[BizImpl]____selectOne입니다. staffno: "+staffno);
+		return totalstaffDao.selectOne(staffno);
+	}
+	
 	
 	
 	

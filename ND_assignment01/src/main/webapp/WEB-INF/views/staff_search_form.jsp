@@ -20,52 +20,24 @@
 
 
 <style type="text/css">
-h1 {
-	text-align: center;
-}
 
-table {
-	width: 100%
-}
+table {width: 100%}
+
+ul {text-align: center;}
+
+ul li{
+	list-style-type: none; 
+/* 	float: left; */
+	display: inline;
+ 	outline: 1px;
+/* 	margin-left: 20px; */
+	}
+
 </style>
 
 
 </head>
 <body>
-
-
-<!-- 
-
-
-전부검색버튼 클릭 시 모든 리스트 보여줄 것.
-   -- 모든 테이블 모은 dto필요
-- [선택]버튼을 클릭하면 조건에 맞는 결과만 보여준다.
-   --조건문 필요
-- 이름은 부분 검색을 한다 "사오만 입력해도 결과 가져오기"
-   -- '%' like '%'
-
-- 졸업일의 최소 날짜가 최대날짜보다 크면 경고메세지
-
-	-- 졸업일~졸업일은 mapper에서 어떻게 추출하지?
-
-- 검색항목은 and조건이고 체크박스로 표현되는 [학력],[기술]항목 내부의 조건은 서로 or이다.
-
-   	-- 학력과 기술항목은 중복 가능... list로 값 받아야하나
-
-
-
--- foreach로 리스트값 가져와서 뿌려주고
-그 안에서 trim,
-
-foreach마다 trim 따로.
-
-그 밖에 페이징
-
-
-
- -->
-
-
 
 
 <div class="first-div-outline">
@@ -208,7 +180,6 @@ foreach마다 trim 따로.
                     <th></th>
                 </tr>
             </thead>
-
             <tbody>
                 <c:choose>
                     <c:when test="${empty totalList }">
@@ -225,7 +196,7 @@ foreach마다 trim 따로.
                                 <td class="staff-department">${totalDto.departmentname }</td>
                                 <td class="staff-graduated">${totalDto.graduateday }</td>
                                 <td class="board-go" style="text-align: center">
-                                	<input type="button" value="수정 /삭제" onclick="" />
+                                	<input type="button" value="수정 /삭제" onclick="boardUpdate(${totalDto.staffno})" />
                                 </td>
                             </tr>
                         </c:forEach>
@@ -251,7 +222,7 @@ foreach마다 trim 따로.
                <!-- << : 10 페이지 뒤로-->
                <c:if test="${pagination.startPage >= 11 }">
                   <li onClick="paging()">
-                     <a href="BOARD_goboardlist.do?currentPage=${pagination.currentPage -10}" aria-label="Previous">
+                     <a href="goboardlist.do?currentPage=${pagination.currentPage -10}" aria-label="Previous">
                         <span aria-hidden="true">&lt;&lt;</span>
                      </a>
                   </li>
@@ -260,7 +231,7 @@ foreach마다 trim 따로.
                <!-- < -->
                <c:if test="${pagination.currentPage ne 1 }">
                   <li onClick="paging(${pagination.prevPage })">
-                     <a href="BOARD_goboardlist.do?currentPage=${pagination.prevPage }" aria-label="Previous">
+                     <a href="goboardlist.do?currentPage=${pagination.prevPage }" aria-label="Previous">
                         <span aria-hidden="true">&nbsp;&lt;&nbsp;</span>
                      </a>
                   </li>
