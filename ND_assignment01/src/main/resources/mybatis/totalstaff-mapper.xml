@@ -59,7 +59,7 @@
 	   GROUP BY sf.STAFF_NO)
 	</select>
 
-	<!-- 01.  -->
+	<!-- 01. exist duplicate -->
 	<select id="boardList_before" parameterType="totalstaffDto" resultMap="totalstaffMap">
 		SELECT X.RN, X.staff_no, X.staff_name, X.staff_gender, X.department_name, X.graduate_day
 		FROM(   
@@ -107,7 +107,7 @@
 	</select>
   
   
-	<!-- 01.  -->
+	<!-- 01. erase duplicate -->
 	<select id="boardList" parameterType="totalstaffDto" resultMap="totalstaffMap">
 		SELECT X.RN, X.staff_no, X.staff_name, X.staff_gender, X.department_name, X.graduate_day		
 		FROM(	SELECT ROWNUM as RN, O.staff_no, O.staff_name, O.staff_gender, O.department_name, O.graduate_day			
@@ -152,5 +152,23 @@
 			WHERE ROWNUM <![CDATA[<=]]> #{endBoardNo}) X
 		WHERE X.RN <![CDATA[>=]]> #{startBoardNo}
 	</select>  
+  
+  	<select id="selectOne" parameterType="int" resultMap="totalstaffMap" >
+		SELECT *
+		FROM STAFF SF 
+		LEFT OUTER JOIN STAFF_SKILL SS ON SF.STAFF_NO = SS.STAFF_NO
+	   	JOIN CODE_SKILL CS ON SS.SKILL_CODE = CS.SKILL_CODE
+		LEFT OUTER JOIN CODE_DEPARTMENT CD ON SF.DEPARTMENT_CODE = CD.DEPARTMENT_CODE
+		LEFT OUTER JOIN CODE_SCHOOL CSL ON SF.SCHOOL_CODE = CSL.SCHOOL_CODE
+		WHERE SF.STAFF_NO = #{staffno}
+  	</select>
+  
+  	<insert id="insertInfo" parameterType="totalstaffDto">
+  	
+  	</insert>
+  	
+  	<update id="updateInfo" parameterType="totalstaffDto">
+
+  	</update>
   
 </mapper>

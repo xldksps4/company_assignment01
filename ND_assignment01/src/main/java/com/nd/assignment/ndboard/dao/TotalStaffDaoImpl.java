@@ -33,7 +33,7 @@ public class TotalStaffDaoImpl implements TotalStaffDao {
 	@Override
 	public TotalStaffDto selectOne(int staffno) {
 		logger.info("[DaoImpl]____selectOne입니다. staffno >>> " + staffno);
-		return null;
+		return sqlSession.selectOne(NAMESPACE+"selectOne", staffno);
 	}
 
 	

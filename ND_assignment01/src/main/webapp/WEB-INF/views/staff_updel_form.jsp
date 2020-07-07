@@ -1,14 +1,59 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" 
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="f" uri="http://www.springframework.org/tags/form" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Board Update</title>
+
+<script type="text/javascript">
+
+
+function chkOnchecked() {
+	
+	var cnt=0;
+	var size=$("input[='chk']").length;
+	for(var i=0;i<size;i++){
+	if($("input[id='chk"+(i+1)+"']:checked").val() != "Y"){
+
+	cnt++;
+	}
+}
+
+			
+
+	if (cnt == 5) {
+
+	alert("사용할 응답항목을 1개 이상 체크하세요.");
+	return;
+
+
+	}
+	
+}
+
+
+
+</script>
+
 </head>
 <body>
 
 
+<!-- 
+
+등록버튼 클릭 시 JS에서 체크해야 할 사항
+
+◆ 이름, 주민번호, 학력, 부서, 졸업일은 필수사항이다. <<<< 미입력 시 경고메세지 보여준다.
+◆기술은 하나 이상 선택해야한다. <<<< 미선택 시 경고 보여준다.
+◆올바른 주민번호여야하고 숫자만 입력 가능하다.  <<<< 아닐 시 경고메세지 보여준다.
+◆존재하는 졸업일이어야 한다. <<<< 틀린날짜 입력 시 경고메세지 보여준다.
+
+ -->
 
 <!-- 
 
@@ -23,74 +68,132 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 
 
 
+<f:form action="inputstaff.do" method="post" modelAttribute="hibernateList" onsubmit="return totalDate(this)">
+		<f:hidden path="juminno" id="hidden-jumin"/>
+		<f:hidden path="schoolname" id="hidden-finalschool"/>
+		
 
+<c:choose>
+	<c:when test="${empty hibernateList }">
+		
+	 </c:when>
+	 
+	 <c:otherwise>
+	</c:otherwise>
+</c:choose>	
+	
+		<table border="1">
+			<col width="50" />
+		    <col width="300" />
+		    <col width="100" />
+		    <col width="300" />
+		    <col width="300" />
+		    <col width="300" />
+	
 
-
-
-
-
-
-
-<table border="1">
 	<!-- row1 -->
 	<tr>
-		<th colspan="6"><span>사원 정보 수정</span></th>
+	<c:choose>
+		<c:when test="${dummyUpdateDto }">
+			<th colspan="6"><span>사원 정보 수정</span></th>
+		</c:when>
+		<c:otherwise>
+			<th colspan="6"><span>사원 정보 등록</span></th>
+		</c:otherwise>
+	</c:choose>
 	</tr>
 	<!-- row2 -->
 	<tr>
 		<th><span>이름</span></th>
 		<td>
-			<input type="text" placeholder="저팔계">
+			<f:input path="staffname" id="" type="text" value="${hibernateList.staffname }" placeholder="저팔계"/>
+			<br/><f:errors path="staffname" cssClass="error" />
 		</td>
 		<th>주민번호</th>
-		<td> 
-			<input type="text" placeholder="830408"/>
+		<td>
+			<input type="text" class="staff-jumin01" value="${fn:substring(hibernateList.juminno,0,6)}" placeholder="830408"/>
 			<span> - </span>
-			<input type="password" placeholder="*******"/>
+			<input type="password" class="staff-jumin02" value="${fn:substring(hibernateList.juminno,7,13)}" placeholder="*******"/>
+			<br/><f:errors path="juminno" cssClass="error" />
 		</td>
 		<th>부서</th>
 		<td>
-			<select name="departmentname">
-				<option value="default">&nbsp;</option>
-				<option value="컨설팅사업부">컨설팅사업부</option>
-				<option value="하이테크사업부">하이테크사업부</option>
-				<option value="SI사업부">SI사업부</option>
-				<option value="반도체사업부">반도체사업부</option>
-				<option value="기업부설연구소">기업부설연구소</option>
-				<option value="전략기획팀">전략기획팀</option>
-				<option value="경영지원팀">경영지원팀</option> 
-			</select>
+			<f:select path="departmentname">
+				<f:option value="${hibernateList.departmentname }"></f:option>
+				<f:option value="컨설팅사업부">컨설팅사업부</f:option>
+				<f:option value="하이테크사업부">하이테크사업부</f:option>
+				<f:option value="SI사업부">SI사업부</f:option>
+				<f:option value="반도체사업부">반도체사업부</f:option>
+				<f:option value="기업부설연구소">기업부설연구소</f:option>
+				<f:option value="전략기획팀">전략기획팀</f:option>
+				<f:option value="경영지원팀">경영지원팀</f:option>
+			</f:select>
+			<br/><f:errors path="departmentname" cssClass="error" />
 		</td>
 	</tr>
 	<!-- row3 -->
 	<tr>
 		<th>학력</th>
 		<td>
-			<input type="checkbox" value="고졸"/>고졸&nbsp;
-			<input type="checkbox" value="전문대졸"/>전문대졸&nbsp;  
-			<input type="checkbox" value="일반대졸"/>일반대졸
+			<input type="checkbox" class="finalschool" value="고졸" />고졸&nbsp;
+			<input type="checkbox" class="finalschool" value="전문대졸"/>전문대졸&nbsp;  
+			<input type="checkbox" class="finalschool" value="일반대졸"/>일반대졸
+			<br/><f:errors path="schoolname" cssClass="error" />
 		</td>
 		<th>기술</th>
 		<td>
-			<input type="checkbox" value="Java"/>Java
-			<input type="checkbox" value="JSP"/>JSP
-			<input type="checkbox" value="ASP"/>ASP
-			<input type="checkbox" value="PHP"/>PHP
-			<input type="checkbox" value="Delphi"/>Delphi &nbsp; &nbsp; &nbsp; &nbsp; 
+			<input type="checkbox" class="skilltree" value="Java"/>Java
+			<input type="checkbox" class="skilltree" value="JSP"/>JSP
+			<input type="checkbox" class="skilltree" value="ASP"/>ASP
+			<input type="checkbox" class="skilltree" value="PHP"/>PHP
+			<input type="checkbox" class="skilltree" value="Delphi"/>Delphi &nbsp; &nbsp; &nbsp; &nbsp; 
 		</td>
 	</tr>
 	<!-- row4 -->
 	<tr>
 		<th>졸업일</th>
-		<td>
-		 <!-- 작성필요 -->
+		<td colspan="5" style="text-align: center">
+				 <!-- 작성필요 -->
+					<select class="graduateday" name="" onchange="">
+						<option></option>
+						<c:forEach var="i" begin="1980" end="2019" step="1">
+							<option value="${i}">${i}년</option>
+						</c:forEach>
+					</select> 년
+					
+					<select class="graduateday" id="" onchange="">
+						<option></option>
+						<c:forEach var="i" begin="1" end="12" step="1">
+							<option value="${i}">${i}월</option>
+						</c:forEach>
+					</select> 월
+					
+					<select class="graduateday" id="" onchange="">
+						<option></option>
+						<c:forEach var="i" begin="1" end="31" step="1">
+							<option value="${i}">${i}일</option>
+						</c:forEach>
+					</select> 일 
+					<br/><f:errors path="graduateday" cssClass="error" />
 		</td>
 	</tr>
 </table>
-	<!-- row5 -->
-	<input type="button" value="수정" onclick=""/>
+<c:choose>
+	<c:when test="${dummyUpdateDto}">
+	<!-- 경로에 따라 Dto 보내주는걸 다르게. 그 값이 test로 들어오면 -->
+	<input type="submit" value="수정" onclick=""/>
 	<input type="button" value="삭제" onclick=""/>
+	</c:when>
+	<c:otherwise>
+	<!-- 경로에 따라 Dto 보내주는걸 다르게. 그 값이 test로 안오면 -->	
+	<input type="submit" value="등록" onclick=""/>
+	<input type="button" value="초기화" onclick=""/>
+	</c:otherwise>
+
+</c:choose>
+	<!-- row5 -->
 	
+</f:form>
 
 
 
