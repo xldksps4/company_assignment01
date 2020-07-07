@@ -24,7 +24,9 @@ function paging(curPage) {
 /*---------- 상세글보기 : boardDetail func ----------*/
 function boardUpdate(staffno) {
 //	var curPage = document.getElementsByClassName('paging-focus').text;  // 쿼리 : $('.paging-focus').text();
-	location.href='goboardupdate.do?staffno=' + staffno; //+ '&curPage=' + curPage;
+	var url= "goboardupdate.do?staffno="+staffno;
+	var option = "width = 800x, height = 300px"
+	window.open(url, "", option);
 }
 
 

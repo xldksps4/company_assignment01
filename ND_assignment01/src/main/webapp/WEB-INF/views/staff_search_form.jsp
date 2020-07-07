@@ -42,7 +42,8 @@ ul li{
 
 <div class="first-div-outline">
 	<form id="form" action="goboardlist.do" method="post" onsubmit="return totalDate()">
-	
+		<input type="hidden" name="currentPage" value="1"/>
+		
 		<table border="1">
 			<col width="50" />
 		    <col width="300" />
@@ -130,7 +131,7 @@ ul li{
 					
 					<select class="graduateday" name="" onchange="">
 						<option></option>
-						<c:forEach var="i" begin="1980" end="2019" step="1">
+						<c:forEach var="i" begin="1980" end="2019" step="01">
 							<option value="${i}">${i}년</option>
 						</c:forEach>
 					</select> 년
@@ -155,7 +156,7 @@ ul li{
 		</table>
 		<!-- row5 -->	
 		<input type="submit" value="검색"/>
-		<input type="button" value="전부검색" onclick="totalDate()"/>
+		<input type="button" value="전부검색" onclick="location.href='goboardlist.do?currentPage=1'"/>
 		<input type="button" value="초기화" onclick="location.reload();"/>
 		<input type="button" value="등록" onclick="goboardwrite.do"/>
 	</form>
