@@ -1,5 +1,4 @@
-
-//성별, 학력 등 중복 제거
+//성별, 
 function dupl(this_chk){
 	let this_class = this_chk.getAttribute("class");
 	let chkList = document.getElementsByClassName(this_class);
@@ -29,18 +28,16 @@ function totalDate(){
 	
 	for(let i = 0; i<graduateday_class.length; i++){
 		let date = graduateday_class[i].options[graduateday_class[i].selectedIndex].value
-			
+		
 			if(graduateday_class[i].value !== ""){
 				if(i <= 2 ){
 					if(date.length <= 1){
 						date = "0" + date;
-						console.log('date >>>' + date)
 					}
 					startDate += date
 				} else {
 					if(date.length <= 1){
 						date = "0" + date;
-						console.log('date >>>' + date)
 					}
 					endDate += date
 				}
@@ -62,7 +59,6 @@ function totalDate(){
 		
 		form.appendChild(hidden_start)
 		form.appendChild(hidden_end)
-		
 	}
 	
 	

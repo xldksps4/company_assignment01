@@ -13,31 +13,6 @@
 <script type="text/javascript">
 
 
-function chkOnchecked() {
-	
-	var cnt=0;
-	var size=$("input[='chk']").length;
-	for(var i=0;i<size;i++){
-	if($("input[id='chk"+(i+1)+"']:checked").val() != "Y"){
-
-	cnt++;
-	}
-}
-
-			
-
-	if (cnt == 5) {
-
-	alert("사용할 응답항목을 1개 이상 체크하세요.");
-	return;
-
-
-	}
-	
-}
-
-
-
 </script>
 
 </head>
@@ -69,8 +44,6 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 
 
 <f:form action="inputstaff.do" method="post" modelAttribute="hibernateList" onsubmit="return totalDate(this)">
-		<f:hidden path="juminno" id="hidden-jumin"/>
-		<f:hidden path="schoolname" id="hidden-finalschool"/>
 		
 
 <c:choose>
@@ -111,9 +84,10 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 		</td>
 		<th>주민번호</th>
 		<td>
-			<input type="text" class="staff-jumin01" value="${fn:substring(hibernateList.juminno,0,6)}" placeholder="830408"/>
+			<input type="text" name="juminno" class="staff-jumin01" value="${fn:substring(hibernateList.juminno,0,6)}" placeholder="830408"/>
 			<span> - </span>
-			<input type="password" class="staff-jumin02" value="${fn:substring(hibernateList.juminno,7,13)}" placeholder="*******"/>
+			<input type="password" name="juminno" class="staff-jumin02" value="${fn:substring(hibernateList.juminno,7,13)}" placeholder="*******"/>
+			
 			<br/><f:errors path="juminno" cssClass="error" />
 		</td>
 		<th>부서</th>
@@ -135,18 +109,18 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 	<tr>
 		<th>학력</th>
 		<td>
-			<input type="checkbox" class="finalschool" value="고졸" />고졸&nbsp;
-			<input type="checkbox" class="finalschool" value="전문대졸"/>전문대졸&nbsp;  
-			<input type="checkbox" class="finalschool" value="일반대졸"/>일반대졸
+			<input type="checkbox" name="schoolname" class="finalschool" value="고졸" />고졸&nbsp;
+			<input type="checkbox" name="schoolname" class="finalschool" value="전문대졸"/>전문대졸&nbsp;  
+			<input type="checkbox" name="schoolname" class="finalschool" value="일반대졸"/>일반대졸
 			<br/><f:errors path="schoolname" cssClass="error" />
 		</td>
 		<th>기술</th>
 		<td>
-			<input type="checkbox" class="skilltree" value="Java"/>Java
-			<input type="checkbox" class="skilltree" value="JSP"/>JSP
-			<input type="checkbox" class="skilltree" value="ASP"/>ASP
-			<input type="checkbox" class="skilltree" value="PHP"/>PHP
-			<input type="checkbox" class="skilltree" value="Delphi"/>Delphi &nbsp; &nbsp; &nbsp; &nbsp; 
+			<input type="checkbox" name="skillname" class="skilltree" value="Java"/>Java
+			<input type="checkbox" name="skillname" class="skilltree" value="JSP"/>JSP
+			<input type="checkbox" name="skillname" class="skilltree" value="ASP"/>ASP
+			<input type="checkbox" name="skillname" class="skilltree" value="PHP"/>PHP
+			<input type="checkbox" name="skillname" class="skilltree" value="Delphi"/>Delphi &nbsp; &nbsp; &nbsp; &nbsp; 
 		</td>
 	</tr>
 	<!-- row4 -->
@@ -154,21 +128,21 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 		<th>졸업일</th>
 		<td colspan="5" style="text-align: center">
 				 <!-- 작성필요 -->
-					<select class="graduateday" name="" onchange="">
+					<select class="graduateday" name="graduateday" onchange="">
 						<option></option>
 						<c:forEach var="i" begin="1980" end="2019" step="1">
 							<option value="${i}">${i}년</option>
 						</c:forEach>
 					</select> 년
 					
-					<select class="graduateday" id="" onchange="">
+					<select class="graduateday" name="graduateday" onchange="">
 						<option></option>
 						<c:forEach var="i" begin="1" end="12" step="1">
 							<option value="${i}">${i}월</option>
 						</c:forEach>
 					</select> 월
 					
-					<select class="graduateday" id="" onchange="">
+					<select class="graduateday" name="graduateday" onchange="">
 						<option></option>
 						<c:forEach var="i" begin="1" end="31" step="1">
 							<option value="${i}">${i}일</option>
