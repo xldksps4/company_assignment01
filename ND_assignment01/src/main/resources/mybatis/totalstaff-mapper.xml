@@ -18,6 +18,21 @@
    <result property="staffskillno" column="staff_skill_no"/>
   </resultMap>
   
+   <resultMap type="HibernateStaffDto" id="HibernateMap">
+   <result property="skillcode" column="skill_code"/>
+   <result property="skillname" column="skill_name"/>
+   <result property="departmentcode" column="department_code"/>
+   <result property="departmentname" column="department_name"/>
+   <result property="schoolcode" column="school_code"/>
+   <result property="schoolname" column="school_name"/>
+   <result property="staffno" column="staff_no"/>
+   <result property="staffname" column="staff_name"/>
+   <result property="staffgender" column="staff_gender"/>
+   <result property="juminno" column="jumin_no"/>
+   <result property="graduateday" column="graduate_day"/>
+   <result property="staffskillno" column="staff_skill_no"/>
+  </resultMap>
+  
   <select id="getTotalBoard" parameterType="totalstaffDto" resultType="int">
 	SELECT count (*)
 	FROM (  SELECT SF.STAFF_NO
@@ -163,13 +178,44 @@
 		WHERE SF.STAFF_NO = #{staffno}
   	</select>
   
-  	<insert id="insertInfo" parameterType="totalstaffDto">
-
-
+  	<select id="selectJumin" parameterType="HibernateStaffDto" resultMap="HibernateMap">
+  		SELECT * FROM STAFF WHERE JUMIN_NO = #{juminno}
+  	</select>
+  
+  	<insert id="insertStaffOne" parameterType="HibernateStaffDto">
+		INSERT INTO STAFF(STAFF_NO, STAFF_NAME, STAFF_GENDER, JUMIN_NO, SCHOOL_CODE, DEPARTMENT_CODE, GRADUATE_DAY) 
+		VALUES(STAFF_SEQ.NEXTVAL, #{staffname}, '남', #{juminno},
+				(SELECT SCHOOL_CODE FROM CODE_SCHOOL WHERE SCHOOL_NAME = #{schoolname}),
+				(SELECT DEPARTMENT_CODE FROM CODE_DEPARTMENT WHERE DEPARTMENT_NAME = #{departmentname}),
+				TO_DATE(#{graduateday},'YYYY-MM-DD')
+		)
   	</insert>
   	
-  	<update id="updateInfo" parameterType="totalstaffDto">
+  	<insert id="insertStaffTwo" parameterType="HibernateStaffDto">
+		INSERT INTO STAFF_SKILL(STAFF_SKILL_NO, STAFF_NO, SKILL_CODE)
+		VALUES(
+			STAFF_SKILL_SEQ.NEXTVAL,
+			#{staffno},
+			(SELECT SKILL_CODE FROM CODE_SKILL WHERE SKILL_NAME = #{skillname})
+			)
+  	</insert>
 
+  	
+  	<update id="updateStaffOne" parameterType="HibernateStaffDto">
+		UPDATE STAFF SET 
+		STAFF_NAME = #{staffname},
+		JUMIN_NO = #{juminno},
+		SCHOOL_CODE = (SELECT SCHOOL_CODE FROM CODE_SCHOOL WHERE SCHOOL_NAME = #{schoolname}),
+		DEPARTMENT_CODE = (SELECT DEPARTMENT_CODE FROM CODE_DEPARTMENT WHERE DEPARTMENT_NAME = #{departmentname})
+		WHERE STAFF_NAME = #{staffname}
+		AND JUMIN_NO = #{juminno}
   	</update>
-  
+  	
+  	
+  	<update id="updateStaffTwo" parameterType="HibernateStaffDto">
+	  			UPDATE STAFF_SKILL SET 
+				SKILL_CODE = (SELECT SKILL_CODE FROM CODE_SKILL WHERE SKILL_NAME = #{skillname})
+				WHERE STAFF_NO = (SELECT STAFF_NO FROM STAFF WHERE STAFF_NAME=#{staffname} AND JUMIN_NO=#{juminno})
+  	</update>
+
 </mapper>

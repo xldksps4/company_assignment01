@@ -8,6 +8,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/board/staff_updel_form.js"></script>
 <title>Board Update</title>
 
 <script type="text/javascript">
@@ -43,17 +45,7 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 
 
 
-<f:form action="inputstaff.do" method="post" modelAttribute="hibernateList" onsubmit="return totalDate(this)">
-		
-
-<c:choose>
-	<c:when test="${empty hibernateList }">
-		
-	 </c:when>
-	 
-	 <c:otherwise>
-	</c:otherwise>
-</c:choose>	
+<f:form action="inputstaff.do" method="post" modelAttribute="hibernateList" onsubmit="return dataParsing()">
 	
 		<table border="1">
 			<col width="50" />
@@ -67,11 +59,11 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 	<!-- row1 -->
 	<tr>
 	<c:choose>
-		<c:when test="${dummyUpdateDto }">
-			<th colspan="6"><span>사원 정보 수정</span></th>
+		<c:when test="${empty dummyUpdateDto }">
+			<th colspan="6"><span>사원 정보 등록</span></th>
 		</c:when>
 		<c:otherwise>
-			<th colspan="6"><span>사원 정보 등록</span></th>
+			<th colspan="6"><span>사원 정보 수정</span></th>
 		</c:otherwise>
 	</c:choose>
 	</tr>
@@ -84,10 +76,10 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 		</td>
 		<th>주민번호</th>
 		<td>
-			<input type="text" name="juminno" class="staff-jumin01" value="${fn:substring(hibernateList.juminno,0,6)}" placeholder="830408"/>
+			<input type="text" id="juminno_front" class="staff-jumin01" value="${fn:substring(hibernateList.juminno,0,6)}" placeholder="830408"/>
 			<span> - </span>
-			<input type="password" name="juminno" class="staff-jumin02" value="${fn:substring(hibernateList.juminno,7,13)}" placeholder="*******"/>
-			
+			<input type="password" id="juminno_back" class="staff-jumin02" value="${fn:substring(hibernateList.juminno,7,14)}" placeholder="*******"/>
+			<f:hidden path="juminno"/>
 			<br/><f:errors path="juminno" cssClass="error" />
 		</td>
 		<th>부서</th>
@@ -109,18 +101,19 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 	<tr>
 		<th>학력</th>
 		<td>
-			<input type="checkbox" name="schoolname" class="finalschool" value="고졸" />고졸&nbsp;
-			<input type="checkbox" name="schoolname" class="finalschool" value="전문대졸"/>전문대졸&nbsp;  
-			<input type="checkbox" name="schoolname" class="finalschool" value="일반대졸"/>일반대졸
+			<f:checkbox path="schoolname" class="finalschool" value="고졸" onclick="dupl(this)"/>고졸&nbsp;
+			<f:checkbox path="schoolname" class="finalschool" value="전문대졸" onclick="dupl(this)"/>전문대졸&nbsp;  
+			<f:checkbox path="schoolname" class="finalschool" value="일반대졸" onclick="dupl(this)"/>일반대졸
 			<br/><f:errors path="schoolname" cssClass="error" />
 		</td>
 		<th>기술</th>
 		<td>
-			<input type="checkbox" name="skillname" class="skilltree" value="Java"/>Java
-			<input type="checkbox" name="skillname" class="skilltree" value="JSP"/>JSP
-			<input type="checkbox" name="skillname" class="skilltree" value="ASP"/>ASP
-			<input type="checkbox" name="skillname" class="skilltree" value="PHP"/>PHP
-			<input type="checkbox" name="skillname" class="skilltree" value="Delphi"/>Delphi &nbsp; &nbsp; &nbsp; &nbsp; 
+			<f:checkbox path="skillname" class="skilltree" value="Java"/>Java
+			<f:checkbox path="skillname" class="skilltree" value="JSP"/>JSP
+			<f:checkbox path="skillname" class="skilltree" value="ASP"/>ASP
+			<f:checkbox path="skillname" class="skilltree" value="PHP"/>PHP
+			<f:checkbox path="skillname" class="skilltree" value="Delphi"/>Delphi &nbsp; &nbsp; &nbsp; &nbsp; 
+			<br/><f:errors path="skillname" cssClass="error" />
 		</td>
 	</tr>
 	<!-- row4 -->
@@ -128,40 +121,39 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 		<th>졸업일</th>
 		<td colspan="5" style="text-align: center">
 				 <!-- 작성필요 -->
-					<select class="graduateday" name="graduateday" onchange="">
+					<select class="graduateday"  onchange="">
 						<option></option>
-						<c:forEach var="i" begin="1980" end="2019" step="1">
-							<option value="${i}">${i}년</option>
+						<c:forEach var="i" begin="1980" end="2020" step="1">
+							<option class="graduateday_yy" value="${i}">${i}년</option>
 						</c:forEach>
 					</select> 년
 					
-					<select class="graduateday" name="graduateday" onchange="">
+					<select class="graduateday"  onchange="">
 						<option></option>
 						<c:forEach var="i" begin="1" end="12" step="1">
-							<option value="${i}">${i}월</option>
+							<option class="graduateday_MM" value="${i}">${i}월</option>
 						</c:forEach>
 					</select> 월
 					
-					<select class="graduateday" name="graduateday" onchange="">
+					<select class="graduateday"  onchange="">
 						<option></option>
 						<c:forEach var="i" begin="1" end="31" step="1">
-							<option value="${i}">${i}일</option>
+							<option class="graduateday_dd" value="${i}">${i}일</option>
 						</c:forEach>
 					</select> 일 
+					<f:hidden path="graduateday"/>
 					<br/><f:errors path="graduateday" cssClass="error" />
 		</td>
 	</tr>
 </table>
 <c:choose>
-	<c:when test="${dummyUpdateDto}">
-	<!-- 경로에 따라 Dto 보내주는걸 다르게. 그 값이 test로 들어오면 -->
-	<input type="submit" value="수정" onclick=""/>
-	<input type="button" value="삭제" onclick=""/>
+	<c:when test="${empty dummyUpdateDto}">	
+		<input type="submit" value="등록"/>
+		<input type="reset" value="초기화"/>
 	</c:when>
 	<c:otherwise>
-	<!-- 경로에 따라 Dto 보내주는걸 다르게. 그 값이 test로 안오면 -->	
-	<input type="submit" value="등록" onclick=""/>
-	<input type="button" value="초기화" onclick=""/>
+		<input type="submit" value="수정"/>
+		<input type="button" value="삭제" onclick="location.href='goboardlist.do'"/>
 	</c:otherwise>
 
 </c:choose>

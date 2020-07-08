@@ -1,6 +1,7 @@
 package com.nd.assignment.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.nd.assignment.common.all.pagenation.OraclePagination;
 import com.nd.assignment.ndboard.biz.HibernateBiz;
 import com.nd.assignment.ndboard.biz.TotalStaffBiz;
@@ -71,7 +71,7 @@ public class NdboardController {
 
 		HibernateStaffDto hibernateList = new HibernateStaffDto();
 		model.addAttribute("hibernateList", hibernateList);
-		return "staff_input_form";
+		return "staff_updel_form";
 	}
 
 	// 글작성 완료
@@ -86,8 +86,12 @@ public class NdboardController {
 		totalstaffDto = totalstaffBiz.selectOne(staffno);
 		logger.info("[Controller]__[DB_Result]__hibernateList 값 >>>" + totalstaffDto);
 
+		/* 추가 : 날자 형식 변환 1983-12-21 00:00:00 >>> 1983-12-21 */
+
+		totalstaffDto.setGraduateday(totalstaffDto.getGraduateday().substring(0, 10));
+
 		// 글수정 페이지 구분자 dummyUpdateDto
-		String dummyUpdateDto = "dummy";
+		String dummyUpdateDto = totalstaffDto.getJuminno();
 
 		model.addAttribute("hibernateList", totalstaffDto);
 		model.addAttribute("dummyUpdateDto", dummyUpdateDto);
@@ -101,71 +105,8 @@ public class NdboardController {
 			BindingResult result) {
 		logger.info("[Controller]____inputStaff입니다. dto값 >>>>" + hibernateList);
 
-		//주민번호
-		if (hibernateList.getJuminno() != null && hibernateList.getJuminno().contains(",")) {
-			hibernateList.setJuminno(hibernateList.getJuminno().replace(",", "-"));
-		}
-		
-		//날짜
-		if (hibernateList.getGraduateday() != null && hibernateList.getGraduateday().contains(",")) {
-			
-			//배열 길이로 잘라서
-			String[] graduateArray = hibernateList.getGraduateday().split(",");
-			String graduateString = hibernateList.getGraduateday();
-			
-			String month = graduateArray[1];
-			String day = graduateArray[2]; 
-			
-			if(month.length()==1) {
-				month = "0" + month; 	
-			} 
-			
-			if(day.length()==1) {
-				day = "0" + day;
-			}
-			
-			String fulldate = graduateArray[0] + month + day; 
-			
-			hibernateList.setGraduateday(fulldate);
-			logger.info("hibernateList.getGraduateday() >>>"+ hibernateList.getGraduateday());
-			
-			
-			hibernateList.setGraduateday(hibernateList.getGraduateday().replace(",", ""));
-			
-			logger.info("변경값 : "+ hibernateList.getGraduateday().replace(",", ""));
-		}
-		if (hibernateList.getSkillname() != null) {
-
-			String[] skillnameArray = hibernateList.getSkillname().split(",");
-			logger.info("skillnameArray >>>"+skillnameArray.toString());
-			List<String> skillnameList = new ArrayList<String>();
-
-			for (int j = 0; j < skillnameArray.length; j++) {
-				skillnameList.add(skillnameArray[j]);
-			}
-			
-			hibernateList.setSkillnameList(skillnameList);
-			
-		}
-
-		// 1) 유효성검사
-
-//		   if(유효성 검사 불통과){
-//		      받아온 데이터와 함께 뷰로 >>>
-//		   } else {
-//		   
-//		      2) 유효성검사 통과시   >> 주민번호를 검사한다. 
-//		      if(주민번호가 있다){
-//		         insert
-//		      } else{
-//		         update
-//		      }
-//
-//		   }
-
-		// 하이버네이트유효성검사
 		if (result.hasErrors()) {
-			logger.info("유효성검사 >>>> 실행 hibernateList >>>"+hibernateList);
+			logger.info("유효성검사 >>>> 실행 hibernateList >>>" + hibernateList);
 			List<ObjectError> list = result.getAllErrors();
 			for (ObjectError error : list) {
 				logger.info("에러 실행중 >>>> error >>>>" + error);
@@ -173,43 +114,78 @@ public class NdboardController {
 			}
 			logger.info("유효성검사 >>>> 실패");
 
-			model.addAttribute("hibernateError", hibernateList);
+			// model.addAttribute("hibernateList", hibernateList); 필요없음 뷰로 리턴시 @Valid가 자동으로
+			// 해줌
 			return "staff_updel_form";
+
 		} else {
 			logger.info("유효성 검사 >>>> 통과  : " + hibernateList);
-			// ------------------------------
 
-			// 로그인세션이 있다면, 관련 정보들 담아야겠지
-//				int updateRes = totalstaffBiz.infoUpdate(dto);
-			logger.info("[DB]글작성 업데이트 성공여부. updateRes : " + hibernateList); // <<<<<<<<<<<성공, 1
+			// [#1 유효성 검사 이후 ] >>>>> DB에 값 추가전에 [String skillname] => [List<String>
+			// skillnameList]
+			if (hibernateList.getSkillname() != null) {
 
-//					if (updateRes > 0) {
-			logger.info("[Controller]__[DB_Result]__infoUpdate 성공 >>>> ");
-//						HibernateStaffDto hibernateStaffDtoRes = totalstaffBiz.selectOne(sduserDto.getSduemail());
-			HibernateStaffDto hibernateStaffDtoRes = hibernateBiz.selectOne(hibernateList.getStaffno());
+				String[] skillnameArray = hibernateList.getSkillname().split(",");
+				logger.info("skillnameArray >>>" + Arrays.toString(skillnameArray));
+				List<String> skillnameList = new ArrayList<String>();
 
-			model.addAttribute("totalList", hibernateStaffDtoRes);
-			logger.info("작성 성공 후 화면 전환 직전 값 확인" + hibernateStaffDtoRes); // <<<<<<<<<<<<<얘는 null
+				for (int j = 0; j < skillnameArray.length; j++) {
+					skillnameList.add(skillnameArray[j]);
+				}
 
-			return "redirect:/goboardlist.do";
-//					}
+				hibernateList.setSkillnameList(skillnameList);
+
+			}
+			// String JUMIN_NO = biz.selectOne(skillnameList.getJUMIN_NO());
+
+			// [#2 유효성 검사 이후 ] >>>>> 주민번호 조회 등록 유무로 insert, update 판단.
+			logger.info("juminDto 검사시작");
+			HibernateStaffDto juminDto = hibernateBiz.selectJumin(hibernateList);
+			logger.info("juminDto 검사종료");
+		
+
+			if (juminDto == null) { // [#3 유효성 검사 이후 ] >>>>> insert
+				logger.info("등록되어 있지 않음 >>>>> insert!!");
+				int insertRes = hibernateBiz.insertInfo(hibernateList);
+				logger.info("[DB]글작성 성공여부. insertRes : " + hibernateList); // <<<<<<<<<<<성공, 1
+
+				if (insertRes > 0) {
+					logger.info("[Controller]__[DB_Result]__infoUpdate 성공 >>>> ");
+//					HibernateStaffDto hibernateStaffDtoRes = totalstaffBiz.selectOne(sduserDto.getSduemail());
+					// HibernateStaffDto hibernateStaffDtoRes =
+					// hibernateBiz.selectOne(hibernateList.getStaffno());
+
+					// model.addAttribute("totalList", hibernateStaffDtoRes);
+					// logger.info("작성 성공 후 화면 전환 직전 값 확인" + hibernateStaffDtoRes); //
+					// <<<<<<<<<<<<<얘는 null
+					logger.info("작성 성공 후 화면 전환 직전 값 확인");
+					return "redirect:/goboardlist.do";
+				}
+
+			} else if (juminDto != null) { // [#4 유효성 검사 이후 ] >>>>> update
+				logger.info("등록되어 있지 않음 >>>>> update!!");
+				int updateRes = hibernateBiz.updateInfo(hibernateList);
+				logger.info("[DB]글작성 업데이트 성공여부. updateRes : " + hibernateList); // <<<<<<<<<<<성공, 1
+				if (updateRes > 0) {
+					logger.info("[Controller]__[DB_Result]__infoUpdate 성공 >>>> ");
+//					HibernateStaffDto hibernateStaffDtoRes = totalstaffBiz.selectOne(sduserDto.getSduemail());
+					// HibernateStaffDto hibernateStaffDtoRes =
+					// hibernateBiz.selectOne(hibernateList.getStaffno());
+
+					// model.addAttribute("totalList", hibernateStaffDtoRes);
+					// logger.info("작성 성공 후 화면 전환 직전 값 확인" + hibernateStaffDtoRes); //
+					// <<<<<<<<<<<<<얘는 null
+					logger.info("작성 성공 후 화면 전환 직전 값 확인");
+					return "redirect:/goboardlist.do";
+				}
+
+			}
 
 		}
-//				return"redirect:/goboardlist.do";		
+
+		return "redirect:/goboardlist.do";
 	}
 
 	// 글 삭제 완료
 
-	
-	public String makeDate() {
-		String s=null;
-		
-		
-		return "s";
-	}
-	public static void main(String[] args) {
-		String date= "";
-		
-		
-	}
 }

@@ -10,9 +10,10 @@ public class HibernateStaffDto {
 
 	/*---------- TB_code_skill ----------*/
 	private int skillcode;
-	private String skillname;
-
+	
 	@NotEmpty(message ="스킬은 하나 이상 등록해주세요")
+	private String skillname;
+	
 	private List<String> skillnameList; // > 중복
 
 	/*---------- TB_code_department ----------*/
