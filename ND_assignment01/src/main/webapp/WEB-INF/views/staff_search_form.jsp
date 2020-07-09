@@ -9,8 +9,8 @@
 <meta charset="UTF-8">
 <title>Board List</title>
 
-<!-- JQ -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- include JQ -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <!-- include paging -->
 <script type="text/javascript"
@@ -158,7 +158,7 @@ ul li{
 		<input type="submit" value="검색"/>
 		<input type="button" value="전부검색" onclick="location.href='goboardlist.do?currentPage=1'"/>
 		<input type="button" value="초기화" onclick="location.reload();"/>
-		<input type="button" value="등록" onclick="goboardwrite.do"/>
+		<input type="button" value="등록" onclick="location.href='goboardwrite.do'"/>
 	</form>
 	<!-- row6, selectlist -->
 

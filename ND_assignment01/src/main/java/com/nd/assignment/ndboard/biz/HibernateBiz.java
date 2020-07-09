@@ -15,4 +15,7 @@ public interface HibernateBiz {
 	
 	// 회원정보 수정하기 2-1, 2-2
 	public int updateInfo(HibernateStaffDto dto);
+	
+	// 회원정보 삭제하기 
+	public int deleteInfo(int staffno);
 }

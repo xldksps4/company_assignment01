@@ -17,4 +17,8 @@ public interface HibernateDao {
 	
 	// 회원정보 수정하기 2-1, 2-2
 	public int updateInfo(HibernateStaffDto dto);
+	
+	// 회원정보 삭제
+	public int deleteInfo(int staffno);
+	
 }

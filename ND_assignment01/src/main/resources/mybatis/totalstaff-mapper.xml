@@ -217,5 +217,14 @@
 				SKILL_CODE = (SELECT SKILL_CODE FROM CODE_SKILL WHERE SKILL_NAME = #{skillname})
 				WHERE STAFF_NO = (SELECT STAFF_NO FROM STAFF WHERE STAFF_NAME=#{staffname} AND JUMIN_NO=#{juminno})
   	</update>
+  	
+  	<delete id="deleteOne" parameterType="int">
+  		DELETE FROM STAFF_SKILL WHERE STAFF_NO = #{staffno}
+  	</delete>
 
+	<delete id="deleteTwo" parameterType="int">
+  		DELETE FROM STAFF WHERE STAFF_NO = #{staffno}
+  	</delete>
+	
+	
 </mapper>

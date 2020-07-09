@@ -187,5 +187,21 @@ public class NdboardController {
 	}
 
 	// 글 삭제 완료
+	@RequestMapping(value = "/deleteinfo.do")
+	public String deleteInfo(Model model, TotalStaffDto totalstaffDto,
+			@ModelAttribute("staffno") String staffno) {			//@RequestParam(value = "staffno") int staffno
+		logger.info("[Controller]____삭제하기, staffno >>>  "+ staffno);
+		
+		int staffnoInt = Integer.parseInt(staffno);
+		
+		int res = hibernateBiz.deleteInfo(staffnoInt);
+		
+		if(res !=0) {
+			logger.info("[Controller ]____삭제 성공, res >>> "+ res );
+			return "redirect:/goboardlist.do";
+		}
+		
+		return "redirect:/goboardlist.do";
+	}
 
 }

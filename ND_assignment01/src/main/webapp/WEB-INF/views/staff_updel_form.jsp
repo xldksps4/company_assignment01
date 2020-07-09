@@ -8,6 +8,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
+<<!-- include JQ -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/board/staff_updel_form.js"></script>
 <title>Board Update</title>
@@ -147,15 +151,16 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 	</tr>
 </table>
 <c:choose>
-	<c:when test="${empty dummyUpdateDto}">	
+	<c:when test="${empty dummyUpdateDto || dummyUpdateDto eq null }"> <!-- dummyUpdateDto eq null -->
 		<input type="submit" value="등록"/>
 		<input type="reset" value="초기화"/>
 	</c:when>
 	<c:otherwise>
 		<input type="submit" value="수정"/>
-		<input type="button" value="삭제" onclick="location.href='goboardlist.do'"/>
+		<input type="button" value="삭제" onclick="removeCheck(${hibernateList.staffno })"/>
+		<input type="hidden" name="staffno" value="${hibernateList.staffno }"/>
 	</c:otherwise>
-
+	
 </c:choose>
 	<!-- row5 -->
 	

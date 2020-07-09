@@ -42,6 +42,13 @@ public class HibernateBizImpl implements HibernateBiz {
 		return dao.updateInfo(dto);
 	}
 
+	@Override
+	public int deleteInfo(int staffno) {
+		logger.info("[BizImpl]__삭제하겠습니다.");
+		return dao.deleteInfo(staffno);
+	}
+
+	
 
 
 

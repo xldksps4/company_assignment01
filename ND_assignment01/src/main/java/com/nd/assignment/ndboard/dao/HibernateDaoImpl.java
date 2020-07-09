@@ -84,5 +84,22 @@ public class HibernateDaoImpl implements HibernateDao {
 		return res1;
 	}
 
+	@Override
+	public int deleteInfo(int staffno) {
+		logger.info("[DaoImpl]____staffno : "+staffno);
+		int res1=0;
+		int res2=0;
+		res1 = sqlSession.delete(NAMESPACE+"deleteOne", staffno);
+		logger.info("res1 결과 >>> : "+res1);
+		res2 = sqlSession.delete(NAMESPACE+"deleteTwo", staffno);
+		logger.info("res2 결과 >>> : "+res2);
+		
+		return res2;
+	}
+	
+	
+
+	
+
 
 }
