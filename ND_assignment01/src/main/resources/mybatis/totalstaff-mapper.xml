@@ -70,6 +70,12 @@
 					</if>
 				</foreach>
 			</if>
+			<if test="category == 'AND' and keyword != null and keyword != ''">
+				AND CS.skill_name LIKE ('%' || #{keyword} || '%')
+			</if>
+			<if test="category == 'OR' and keyword != null and keyword != ''">
+				OR CS.skill_name LIKE ('%' || #{keyword} || '%')
+			</if>
 	   	</trim>
 	   GROUP BY sf.STAFF_NO)
 	</select>
@@ -114,6 +120,12 @@
 								AND A.graduate_day  <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
 							</if>
 						</foreach>
+					</if>
+					<if test="category == 'AND' and keyword != null and keyword != ''">
+						AND CS.skill_name LIKE ('%' || #{keyword} || '%')
+					</if>
+					<if test="category == 'OR' and keyword != null and keyword != ''">
+						OR CS.skill_name LIKE ('%' || #{keyword} || '%')
 					</if>
 	      		</trim>
 	      		ORDER BY A.staff_no DESC) O
@@ -160,6 +172,12 @@
 								AND SF.graduate_day  <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
 							</if>
 						</foreach>
+					</if>
+					<if test="category == 'AND' and keyword != null and keyword != ''">
+						AND CS.skill_name LIKE ('%' || #{keyword} || '%')
+					</if>
+					<if test="category == 'OR' and keyword != null and keyword != ''">
+						OR CS.skill_name LIKE ('%' || #{keyword} || '%')
 					</if>
 	      		</trim>
 	      		GROUP BY SF.STAFF_NO, SF.staff_name, SF.staff_gender, CDM.department_name, SF.graduate_day

@@ -108,7 +108,6 @@ ul li{
 								name="keyword" id="keyword" onkeydown="onKeyDown();">
 						</div>
 						<div class="search-checkbox-group">
-							<input type="checkbox" class="staffgender_class" name="staffgender" value="여" onclick="dupl(this)"/>여
                             <input type="checkbox" class="category_class" name="category" value="OR" onclick="dupl(this)"/>OR&nbsp;  
                             <input type="checkbox" class="category_class" name="category" value="AND" onclick="dupl(this)"/>AND
 						</div>
