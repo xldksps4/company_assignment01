@@ -101,6 +101,18 @@ ul li{
 					<input type="checkbox" value="PHP" name="skillnameList"/>PHP
 					<input type="checkbox" value="Delphi" name="skillnameList"/>Delphi &nbsp; &nbsp; &nbsp; &nbsp; 
 				</td>
+				<th>키워드</th>
+                    <td>
+						<div class="search-input">
+							<input type="text" class="form-control form-control-sm"
+								name="keyword" id="keyword" onkeydown="onKeyDown();">
+						</div>
+						<div class="search-checkbox-group">
+							<input type="checkbox" class="staffgender_class" name="staffgender" value="여" onclick="dupl(this)"/>여
+                            <input type="checkbox" class="category_class" name="category" value="OR" onclick="dupl(this)"/>OR&nbsp;  
+                            <input type="checkbox" class="category_class" name="category" value="AND" onclick="dupl(this)"/>AND
+						</div>
+                    </td>
 			</tr>
 			<!-- row4 -->
 			<tr>

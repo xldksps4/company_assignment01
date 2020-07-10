@@ -49,7 +49,7 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 
 
 
-<f:form action="inputstaff.do" method="post" modelAttribute="hibernateList" onsubmit="return dataParsing()">
+<f:form action="inputstaff.do" id="hibernateList" method="post" modelAttribute="hibernateList" onsubmit="return dataParsing()">
 	
 		<table border="1">
 			<col width="50" />

@@ -2,7 +2,9 @@ package com.nd.assignment.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -14,15 +16,19 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nd.assignment.common.all.pagenation.OraclePagination;
 import com.nd.assignment.ndboard.biz.HibernateBiz;
 import com.nd.assignment.ndboard.biz.TotalStaffBiz;
 import com.nd.assignment.ndboard.dto.HibernateStaffDto;
 import com.nd.assignment.ndboard.dto.TotalStaffDto;
+
+import net.sf.json.JSON;
 
 @Controller
 public class NdboardController {
@@ -188,20 +194,25 @@ public class NdboardController {
 
 	// 글 삭제 완료
 	@RequestMapping(value = "/deleteinfo.do")
+	@ResponseBody
 	public String deleteInfo(Model model, TotalStaffDto totalstaffDto,
-			@ModelAttribute("staffno") String staffno) {			//@RequestParam(value = "staffno") int staffno
-		logger.info("[Controller]____삭제하기, staffno >>>  "+ staffno);
+			@RequestParam(value = "staffno") int staffno ) {		 //@RequestBody HashMap<String, Integer> input
+		logger.info("[Controller]____삭제하기, input >>>  "+ staffno);
+	
+//		Map<String, Integer> output = new HashMap<String, Integer>();
 		
-		int staffnoInt = Integer.parseInt(staffno);
 		
-		int res = hibernateBiz.deleteInfo(staffnoInt);
+
+		
+		int res = hibernateBiz.deleteInfo(staffno);
 		
 		if(res !=0) {
 			logger.info("[Controller ]____삭제 성공, res >>> "+ res );
 			return "redirect:/goboardlist.do";
-		}
-		
+		}else {
+		logger.info("[Controller ]____삭제 실패, res >>> "+ res );
 		return "redirect:/goboardlist.do";
+		}
 	}
 
 }
