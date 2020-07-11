@@ -22,5 +22,34 @@ public class HibernateBizImpl implements HibernateBiz {
 		logger.info("[BizImpl]__Hiber__selectOne입니다. staffno: "+staffno);
 		return dao.selectOne(staffno);
 	}
+	
+	@Override
+	public HibernateStaffDto selectJumin(HibernateStaffDto dto) {
+		// TODO Auto-generated method stub
+		return dao.selectJumin(dto);
+	}
+
+	@Override
+	public int insertInfo(HibernateStaffDto dto) {
+		// TODO Auto-generated method stub
+		return dao.insertInfo(dto);
+	}
+
+
+	@Override
+	public int updateInfo(HibernateStaffDto dto) {
+		logger.info("업데이트하러 갑니다 다오로~!!");
+		return dao.updateInfo(dto);
+	}
+
+	@Override
+	public int deleteInfo(int staffno) {
+		logger.info("[BizImpl]__삭제하겠습니다.");
+		return dao.deleteInfo(staffno);
+	}
+
+	
+
+
 
 }

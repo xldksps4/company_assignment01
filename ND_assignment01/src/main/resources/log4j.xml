@@ -71,7 +71,7 @@
 	<!-- Root Logger  (수정) root 태그는 전역설정 logger입니다.-->
 	<root>
 <!-- 		<priority value="warn" /> -->
-		<priority value="info"/>
+		<priority value="trace"/>
 		<appender-ref ref="console" />
 	</root>
 	

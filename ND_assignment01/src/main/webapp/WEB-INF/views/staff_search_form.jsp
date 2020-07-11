@@ -9,8 +9,8 @@
 <meta charset="UTF-8">
 <title>Board List</title>
 
-<!-- JQ -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- include JQ -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <!-- include paging -->
 <script type="text/javascript"
@@ -101,6 +101,17 @@ ul li{
 					<input type="checkbox" value="PHP" name="skillnameList"/>PHP
 					<input type="checkbox" value="Delphi" name="skillnameList"/>Delphi &nbsp; &nbsp; &nbsp; &nbsp; 
 				</td>
+				<th>키워드</th>
+                    <td>
+						<div class="search-input">
+							<input type="text" class="form-control form-control-sm"
+								name="keyword" id="keyword" onkeydown="onKeyDown();">
+						</div>
+						<div class="search-checkbox-group">
+                            <input type="checkbox" class="category_class" name="category" value="OR" onclick="dupl(this)"/>OR&nbsp;  
+                            <input type="checkbox" class="category_class" name="category" value="AND" onclick="dupl(this)"/>AND
+						</div>
+                    </td>
 			</tr>
 			<!-- row4 -->
 			<tr>
@@ -158,7 +169,7 @@ ul li{
 		<input type="submit" value="검색"/>
 		<input type="button" value="전부검색" onclick="location.href='goboardlist.do?currentPage=1'"/>
 		<input type="button" value="초기화" onclick="location.reload();"/>
-		<input type="button" value="등록" onclick="goboardwrite.do"/>
+		<input type="button" value="등록" onclick="location.href='goboardwrite.do'"/>
 	</form>
 	<!-- row6, selectlist -->
 

@@ -23,6 +23,7 @@ mappers?
 
 	<typeAliases>
 		<typeAlias type="com.nd.assignment.ndboard.dto.TotalStaffDto" alias="totalstaffDto"/>
+		<typeAlias type="com.nd.assignment.ndboard.dto.HibernateStaffDto" alias="HibernateStaffDto"/>
 	</typeAliases>
 
 	<mappers>
