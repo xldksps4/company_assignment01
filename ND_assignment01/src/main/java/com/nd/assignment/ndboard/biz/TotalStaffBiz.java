@@ -13,6 +13,8 @@ public interface TotalStaffBiz {
 	// 전체선택(검색+페이징)
 	public List<TotalStaffDto> boardList(TotalStaffDto dto);
 	
+	public List<TotalStaffDto> boardListAsc(TotalStaffDto dto);
+	
 	
 	// 글 하나만 보기
 	public TotalStaffDto selectOne(int staffno);

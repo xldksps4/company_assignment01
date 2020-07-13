@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 
 <!DOCTYPE html>
@@ -100,18 +100,12 @@ ul li{
 					<input type="checkbox" value="ASP" name="skillnameList"/>ASP
 					<input type="checkbox" value="PHP" name="skillnameList"/>PHP
 					<input type="checkbox" value="Delphi" name="skillnameList"/>Delphi &nbsp; &nbsp; &nbsp; &nbsp; 
+					<div class="search-input">
+						키워드<input type="text" class="form-control form-control-sm" name="keyword" id="keyword" onkeydown="onKeyDown();">
+						<input type="checkbox" class="category_class" name="category" value="OR" onclick="dupl(this)"/>OR&nbsp;  
+                        <input type="checkbox" class="category_class" name="category" value="AND" onclick="dupl(this)"/>AND
+					</div>
 				</td>
-				<th>키워드</th>
-                    <td>
-						<div class="search-input">
-							<input type="text" class="form-control form-control-sm"
-								name="keyword" id="keyword" onkeydown="onKeyDown();">
-						</div>
-						<div class="search-checkbox-group">
-                            <input type="checkbox" class="category_class" name="category" value="OR" onclick="dupl(this)"/>OR&nbsp;  
-                            <input type="checkbox" class="category_class" name="category" value="AND" onclick="dupl(this)"/>AND
-						</div>
-                    </td>
 			</tr>
 			<!-- row4 -->
 			<tr>
@@ -167,9 +161,10 @@ ul li{
 		</table>
 		<!-- row5 -->	
 		<input type="submit" value="검색"/>
+		<input type="button" value="역정렬 검색" onclick="onButt();"/>
 		<input type="button" value="전부검색" onclick="location.href='goboardlist.do?currentPage=1'"/>
 		<input type="button" value="초기화" onclick="location.reload();"/>
-		<input type="button" value="등록" onclick="location.href='goboardwrite.do'"/>
+		<input type="button" value="등록" onclick="boardWrite();"/>
 	</form>
 	<!-- row6, selectlist -->
 
@@ -206,7 +201,7 @@ ul li{
                                 <td class="staff-name">${totalDto.staffname }</td>
                                 <td class="staff-gender">${totalDto.staffgender }</td>
                                 <td class="staff-department">${totalDto.departmentname }</td>
-                                <td class="staff-graduated">${totalDto.graduateday }</td>
+                                <td class="staff-graduated">${fn:substring(totalDto.graduateday,0,10)}</td>
                                 <td class="board-go" style="text-align: center">
                                 	<input type="button" value="수정 /삭제" onclick="boardUpdate(${totalDto.staffno})" />
                                 </td>

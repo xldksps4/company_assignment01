@@ -153,10 +153,11 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 <c:choose>
 	<c:when test="${empty dummyUpdateDto || dummyUpdateDto eq null }"> <!-- dummyUpdateDto eq null -->
 		<input type="submit" value="등록"/>
+<!-- 		<input type="button" value="등록" onclick="inputCheck();"/> -->
 		<input type="reset" value="초기화"/>
 	</c:when>
 	<c:otherwise>
-		<input type="submit" value="수정"/>
+		<input type="button" value="수정" onclick="inputCheck();"/>
 		<input type="button" value="삭제" onclick="removeCheck(${hibernateList.staffno })"/>
 		<input type="hidden" name="staffno" value="${hibernateList.staffno }"/>
 	</c:otherwise>

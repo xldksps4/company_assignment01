@@ -46,7 +46,7 @@ public class NdboardController {
 	public String goBoardList(Model model, TotalStaffDto totalstaffDto,
 			@RequestParam(value = "currentPage", defaultValue = "0") int currentPage) {
 		logger.info("[Controller]____goBoardList TotalStaffDto >>>> : " + totalstaffDto);
-		logger.info("[\" :>>>> \", currentPage]" + currentPage);
+		logger.info("[Controller]__ currentPage >>>>" + currentPage);
 		if (currentPage < 1) {
 			logger.info("[Controller]____goBoardList 첫 화면 집입");
 			return "staff_search_form";
@@ -71,6 +71,38 @@ public class NdboardController {
 		return "staff_search_form";
 	}
 
+	// 리스트 페이지로 가기
+	@RequestMapping(value = "/goboardlistasc.do")
+	public String goBoardListAsc(Model model, TotalStaffDto totalstaffDto,
+			@RequestParam(value = "currentPage", defaultValue = "0") int currentPage) {
+		logger.info("[Controller]____goBoardList TotalStaffDto >>>> : " + totalstaffDto);
+		logger.info("[\" :>>>> \", currentPage]" + currentPage);
+		if (currentPage < 1) {
+			logger.info("[Controller]____goBoardList 첫 화면 집입");
+			return "staff_search_form";
+		} else {
+			// 게시물 개수
+			int totalBoard = totalstaffBiz.getTotalBoard(totalstaffDto);
+			logger.info("[Controller]__[총개시물 개수] >>>>>>>>>>>> : " + totalBoard);
+
+			OraclePagination pagination = new OraclePagination(5, 5, totalBoard, currentPage);
+			totalstaffDto.setStartBoardNo(pagination.getStartBoardNo());
+			totalstaffDto.setEndBoardNo(pagination.getEndBoardNo());
+
+			// 페이징 처리된 게시물 가져오기
+			List<TotalStaffDto> totalList = totalstaffBiz.boardListAsc(totalstaffDto);
+
+			logger.info("[Controller]__totalDto 값 >>> " + totalList);
+
+			model.addAttribute("totalList", totalList);
+			model.addAttribute("pagination", pagination);
+
+		}
+		return "staff_search_form";
+	}
+	
+	
+	
 	// 글작성페이지로 가기
 	@RequestMapping(value = "/goboardwrite.do")
 	public String goBoardInsert(Model model) {
@@ -107,8 +139,8 @@ public class NdboardController {
 
 	// 글 수정 완료
 	@RequestMapping(value = "/inputstaff.do")
-	public String inputStaff(Model model, @ModelAttribute("hibernateList") @Valid HibernateStaffDto hibernateList,
-			BindingResult result) {
+	public String inputStaff(Model model, @ModelAttribute("hibernateList") 
+		@Valid HibernateStaffDto hibernateList, BindingResult result) {
 		logger.info("[Controller]____inputStaff입니다. dto값 >>>>" + hibernateList);
 
 		if (result.hasErrors()) {
@@ -126,7 +158,8 @@ public class NdboardController {
 
 		} else {
 			logger.info("유효성 검사 >>>> 통과  : " + hibernateList);
-
+			
+			
 			// [#1 유효성 검사 이후 ] >>>>> DB에 값 추가전에 [String skillname] => [List<String>
 			// skillnameList]
 			if (hibernateList.getSkillname() != null) {
