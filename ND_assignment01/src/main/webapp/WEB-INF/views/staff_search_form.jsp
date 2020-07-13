@@ -167,6 +167,7 @@ ul li{
 		</table>
 		<!-- row5 -->	
 		<input type="submit" value="검색"/>
+		<input type="button" value="역정렬 검색" onclick="onButt();"/>
 		<input type="button" value="전부검색" onclick="location.href='goboardlist.do?currentPage=1'"/>
 		<input type="button" value="초기화" onclick="location.reload();"/>
 		<input type="button" value="등록" onclick="location.href='goboardwrite.do'"/>

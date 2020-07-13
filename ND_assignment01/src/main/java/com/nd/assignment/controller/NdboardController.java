@@ -71,6 +71,38 @@ public class NdboardController {
 		return "staff_search_form";
 	}
 
+	// 리스트 페이지로 가기
+	@RequestMapping(value = "/goboardlistasc.do")
+	public String goBoardListAsc(Model model, TotalStaffDto totalstaffDto,
+			@RequestParam(value = "currentPage", defaultValue = "0") int currentPage) {
+		logger.info("[Controller]____goBoardList TotalStaffDto >>>> : " + totalstaffDto);
+		logger.info("[\" :>>>> \", currentPage]" + currentPage);
+		if (currentPage < 1) {
+			logger.info("[Controller]____goBoardList 첫 화면 집입");
+			return "staff_search_form";
+		} else {
+			// 게시물 개수
+			int totalBoard = totalstaffBiz.getTotalBoard(totalstaffDto);
+			logger.info("[Controller]__[총개시물 개수] >>>>>>>>>>>> : " + totalBoard);
+
+			OraclePagination pagination = new OraclePagination(5, 5, totalBoard, currentPage);
+			totalstaffDto.setStartBoardNo(pagination.getStartBoardNo());
+			totalstaffDto.setEndBoardNo(pagination.getEndBoardNo());
+
+			// 페이징 처리된 게시물 가져오기
+			List<TotalStaffDto> totalList = totalstaffBiz.boardListAsc(totalstaffDto);
+
+			logger.info("[Controller]__totalDto 값 >>> " + totalList);
+
+			model.addAttribute("totalList", totalList);
+			model.addAttribute("pagination", pagination);
+
+		}
+		return "staff_search_form";
+	}
+	
+	
+	
 	// 글작성페이지로 가기
 	@RequestMapping(value = "/goboardwrite.do")
 	public String goBoardInsert(Model model) {

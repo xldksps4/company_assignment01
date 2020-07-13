@@ -29,12 +29,20 @@ public class TotalStaffDaoImpl implements TotalStaffDao {
 		logger.info("[DaoImpl]____boardList입니다. dto >>> " + dto);
 		return sqlSession.selectList(NAMESPACE + "boardList", dto);
 	}
+	
+	@Override
+	public List<TotalStaffDto> boardListAsc(TotalStaffDto dto) {
+		logger.info("[DaoImpl]____boardListAsc입니다. dto >>> " + dto);
+		return sqlSession.selectList(NAMESPACE + "boardListAsc", dto);
+	}
+
 
 	@Override
 	public TotalStaffDto selectOne(int staffno) {
 		logger.info("[DaoImpl]____selectOne입니다. staffno >>> " + staffno);
 		return sqlSession.selectOne(NAMESPACE+"selectOne", staffno);
 	}
+
 
 	
 }

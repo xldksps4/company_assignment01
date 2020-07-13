@@ -69,5 +69,13 @@ function totalDate(){
 	return true;
 }
 
+function onButt(){
+
+	let totalstaffDto = $('#form').serialize()
+	console.log('totalstaffDto >>> '+ totalstaffDto)
+	location.href='goboardlistasc.do?currentPage=1&totalstaffDto='+totalstaffDto
+}
+
+
 
 
