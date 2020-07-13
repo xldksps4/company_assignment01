@@ -44,6 +44,14 @@ public class TotalStaffBizImpl implements TotalStaffBiz {
 		return totalstaffDao.selectOne(staffno);
 	}
 
+	@Override
+	public List<TotalStaffDto> selectListOne(int staffno) {
+		logger.info("[BizImpl]____selectListOne입니다. staffno: "+staffno);
+		return totalstaffDao.selectListOne(staffno);
+	}
+
+
+
 
 	
 	

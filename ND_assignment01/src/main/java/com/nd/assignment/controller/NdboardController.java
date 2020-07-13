@@ -1,11 +1,14 @@
 package com.nd.assignment.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -121,26 +124,48 @@ public class NdboardController {
 		logger.info("[Controller]____goBoardUpdate totalstaffDto >>>> " + totalstaffDto);
 
 		// 글번호 조회
-		totalstaffDto = totalstaffBiz.selectOne(staffno);
-		logger.info("[Controller]__[DB_Result]__hibernateList 값 >>>" + totalstaffDto);
-
+		List<TotalStaffDto> totalList = totalstaffBiz.selectListOne(staffno);
+		logger.info("[Controller]__[DB_Result]__selectListOne가져온 값 >>>" + totalList);
+		String skillname = "";
+		String skillCode = "";
+		for (int i = 0; i<totalList.size(); i++) {
+			if(i == 0) {
+				skillname = totalList.get(i).getSkillname();
+				skillCode = totalList.get(i).getSkillcode() + "";
+			} else {
+				skillname = skillname + "," + totalList.get(i).getSkillname();
+				skillCode = skillCode + "" + totalList.get(i).getSkillcode();
+			}
+			//totalstaffDto.setMyDto(totalStaffDto2);
+		}
+		logger.info("스킬네임은? "+ skillname);
+		logger.info("totalstaffDto>>>>>>>>>>>>>>>>>>>>>>>>>"+totalList.get(0));
+		
+		totalList.get(0).setSkillname(skillname);
+		totalList.get(0).setSkillcode(Integer.parseInt(skillCode));
 		/* 추가 : 날자 형식 변환 1983-12-21 00:00:00 >>> 1983-12-21 */
-
-		totalstaffDto.setGraduateday(totalstaffDto.getGraduateday().substring(0, 10));
+		 
+//		dto.setGraduateday(totalList.get(0).getGraduateday().substring(0,10));
+		//totalstaffDto.setGraduateday(totalstaffDto.getGraduateday().substring(0, 10));
 
 		// 글수정 페이지 구분자 dummyUpdateDto
-		String dummyUpdateDto = totalstaffDto.getJuminno();
+		String dummyUpdateDto ="dummy"; //dto.getJuminno();
 
-		model.addAttribute("hibernateList", totalstaffDto);
+		model.addAttribute("hibernateList", totalList.get(0));
 		model.addAttribute("dummyUpdateDto", dummyUpdateDto);
 
 		return "staff_updel_form";
 	}
+	
+	
+	
+	
 
 	// 글 수정 완료
 	@RequestMapping(value = "/inputstaff.do")
 	public String inputStaff(Model model, @ModelAttribute("hibernateList") 
-		@Valid HibernateStaffDto hibernateList, BindingResult result) {
+		@Valid HibernateStaffDto hibernateList, BindingResult result,
+		HttpServletResponse response) throws IOException {
 		logger.info("[Controller]____inputStaff입니다. dto값 >>>>" + hibernateList);
 
 		if (result.hasErrors()) {
@@ -189,7 +214,7 @@ public class NdboardController {
 				logger.info("[DB]글작성 성공여부. insertRes : " + hibernateList); // <<<<<<<<<<<성공, 1
 
 				if (insertRes > 0) {
-					logger.info("[Controller]__[DB_Result]__infoUpdate 성공 >>>> ");
+					logger.info("[Controller]__[DB_Result]__infoInsert 성공 >>>> ");
 //					HibernateStaffDto hibernateStaffDtoRes = totalstaffBiz.selectOne(sduserDto.getSduemail());
 					// HibernateStaffDto hibernateStaffDtoRes =
 					// hibernateBiz.selectOne(hibernateList.getStaffno());
@@ -198,15 +223,15 @@ public class NdboardController {
 					// logger.info("작성 성공 후 화면 전환 직전 값 확인" + hibernateStaffDtoRes); //
 					// <<<<<<<<<<<<<얘는 null
 					logger.info("작성 성공 후 화면 전환 직전 값 확인");
-					return "redirect:/goboardlist.do";
+					return "staff_close";   	
 				}
 
 			} else if (juminDto != null) { // [#4 유효성 검사 이후 ] >>>>> update
-				logger.info("등록되어 있지 않음 >>>>> update!!");
+				logger.info("등록되어 있음 >>>>> update!!");
 				int updateRes = hibernateBiz.updateInfo(hibernateList);
-				logger.info("[DB]글작성 업데이트 성공여부. updateRes : " + hibernateList); // <<<<<<<<<<<성공, 1
+				logger.info("[DB]글작성 업데이트 성공여부. updateRes : " + updateRes); // <<<<<<<<<<<성공, 1
 				if (updateRes > 0) {
-					logger.info("[Controller]__[DB_Result]__infoUpdate 성공 >>>> ");
+					logger.info("[Controller]__[DB_Result]__infoUpdate 성공 >>>> updateRes :  "+updateRes);
 //					HibernateStaffDto hibernateStaffDtoRes = totalstaffBiz.selectOne(sduserDto.getSduemail());
 					// HibernateStaffDto hibernateStaffDtoRes =
 					// hibernateBiz.selectOne(hibernateList.getStaffno());
@@ -214,10 +239,10 @@ public class NdboardController {
 					// model.addAttribute("totalList", hibernateStaffDtoRes);
 					// logger.info("작성 성공 후 화면 전환 직전 값 확인" + hibernateStaffDtoRes); //
 					// <<<<<<<<<<<<<얘는 null
-					logger.info("작성 성공 후 화면 전환 직전 값 확인");
-					return "redirect:/goboardlist.do";
+					logger.info("업데이트 성공 후 화면 전환 직전 값 확인");
+					
+					return "staff_close";   
 				}
-
 			}
 
 		}

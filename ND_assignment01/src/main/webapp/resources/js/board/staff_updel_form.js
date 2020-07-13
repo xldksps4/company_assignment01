@@ -38,12 +38,31 @@ window.onload = function(){
 			break;
 		}
 	}
+	
+	
+	//skillName 쪼개주기
+	//01. skillname에 들어온 값을 ,기준으로 쪼개주기
+	let skillName = document.getElementById('dtoSkillname').value;
+	let skillNameSplit = skillName.split(',');
+	
+	//02. class기준으로 값 가져오기
+	let chkList = document.getElementsByClassName('skilltree');
+	for(let i=0; i<chkList.length; i++){
+		for(let j=0; j<skillNameSplit.length; j++){
+
+			if(chkList[i].value == skillNameSplit[j]){
+				chkList[i].checked = true;
+			}
+				
+		}
+	}
+	
 }
 
 // 학력 중복 제거
 function dupl(this_chk){
-	let this_class = this_chk.getAttribute("class");
-	let chkList = document.getElementsByClassName(this_class);
+	let this_class = this_chk.getAttribute("class");	
+	let chkList = document.getElementsByClassName(this_class);		
 	
 	for(let i = 0; i<chkList.length; i++ ){
 		if(this_chk != chkList[i]){
@@ -82,43 +101,25 @@ function dataParsing(){
 			}
 		}
 	}
-	return true;
-}
-
-function removeCheck2(staffno){
-	if(confirm('정말 삭제하시겠습니까?')== true){
-		console.log('파라미터 데이터 확인 staffno : '+staffno)
-		console.log('파라미터 데이터 타입 확인 staffno : '+ typeof staffno)
-		//* {}(jsonObject)가 아닌 단일 값을 post방식으로 보낸다면 @ModelAttribute를 사용하면 된다. >> 그리고 map으로 받으면 된다.
+	
+	if(confirm('정말 저장하시겠습니까?')== true){
+		console.log('inputCheck(), 파라미터 데이터 확인 할건 없음')
 		
-		$.ajax({
-			type : 'post',				// 타입 (get, post, put 등등)
-			url : '/assignment/deleteinfo.do',
-			async : true,				// 비동기화 여부(default : true)
-			headers: {			// Http header
-				'Content-Type' : 'application/json',
-			    'X-HTTP-Method-Override' : 'POST'
-			},
-			dataType : 'text',			// (html, xml, json, text 등등...),
-			data : JSON.stringify({		// 보낼 데이터 (Object , String, Array)
-				'staffno' : staffno
-			}),
-			success : function(result){	// 결과 성공 콜백함수
-				console.log('성공 !! >>>'+result)
-				window.close();
-			},
-			error : function(request, status, error){
-				alert('request, status, error입니다. >>>>'+ request+'>>>>'+ status+'>>>>'+ error)
-			}	
-		})
-
+		let form = document.getElementById("hibernateList")
+		console.log('form 값 : '+form)
+		
+		//form.submit();
+		console.log('저장선공')
+//		window.open('about:blank','_self').close();
+		return true;	
 	
 	}else{
+		console.log('저장실패')
 		return false;
 	}
+	
+	return false;
 }
-
-
 
 
 function removeCheck1(){
@@ -177,10 +178,11 @@ function inputCheck(){
 		console.log('inputCheck(), 파라미터 데이터 확인 할건 없음')
 		
 		let form = document.getElementById("hibernateList")
+		console.log('form 값 : '+form)
 		
 		form.submit();
 		console.log('저장선공')
-		window.open('about:blank','_self').close();
+//		window.open('about:blank','_self').close();
 	
 	}else{
 		console.log('저장실패')

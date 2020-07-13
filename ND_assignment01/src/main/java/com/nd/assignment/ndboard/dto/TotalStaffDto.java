@@ -51,6 +51,8 @@ public class TotalStaffDto {
     /*시작일 종료일 */
     private String startDate;
     private String endDate;
+    
+    private TotalStaffDto myDto;
 		
     /*================================== 생성자 ================================ */
     
@@ -61,7 +63,7 @@ public class TotalStaffDto {
 	public TotalStaffDto(int skillcode, String skillname, List<String> skillnameList, int departmentcode,
 			String departmentname, int schoolcode, String schoolname, int staffno, String staffname, String staffgender,
 			String juminno, String graduateday, List<String> graduatedayList, int staffskillno, String category,
-			String keyword, int startBoardNo, int endBoardNo, String startDate, String endDate) {
+			String keyword, int startBoardNo, int endBoardNo, String startDate, String endDate, TotalStaffDto myDto) {
 		super();
 		this.skillcode = skillcode;
 		this.skillname = skillname;
@@ -83,6 +85,7 @@ public class TotalStaffDto {
 		this.endBoardNo = endBoardNo;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.myDto = myDto;
 	}
 
 	public int getSkillcode() {
@@ -245,6 +248,14 @@ public class TotalStaffDto {
 		this.endDate = endDate;
 	}
 
+	public TotalStaffDto getMyDto() {
+		return myDto;
+	}
+
+	public void setMyDto(TotalStaffDto myDto) {
+		this.myDto = myDto;
+	}
+
 	@Override
 	public String toString() {
 		return "TotalStaffDto [skillcode=" + skillcode + ", skillname=" + skillname + ", skillnameList=" + skillnameList
@@ -253,9 +264,10 @@ public class TotalStaffDto {
 				+ ", staffgender=" + staffgender + ", juminno=" + juminno + ", graduateday=" + graduateday
 				+ ", graduatedayList=" + graduatedayList + ", staffskillno=" + staffskillno + ", category=" + category
 				+ ", keyword=" + keyword + ", startBoardNo=" + startBoardNo + ", endBoardNo=" + endBoardNo
-				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
+				+ ", startDate=" + startDate + ", endDate=" + endDate + ", myDto=" + myDto + "]";
 	}
 
+	
 
 
 

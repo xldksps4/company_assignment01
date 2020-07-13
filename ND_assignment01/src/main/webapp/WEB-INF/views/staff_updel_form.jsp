@@ -112,6 +112,8 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 		</td>
 		<th>기술</th>
 		<td>
+			<input id="dtoSkillname" type="hidden" value="${hibernateList.skillname }"/>
+			<input id="dtoSkillcode" type="hidden" name = "skillcode" value="${hibernateList.skillcode }"/>
 			<f:checkbox path="skillname" class="skilltree" value="Java"/>Java
 			<f:checkbox path="skillname" class="skilltree" value="JSP"/>JSP
 			<f:checkbox path="skillname" class="skilltree" value="ASP"/>ASP
@@ -157,8 +159,9 @@ list에서 수정/삭제 버튼을 클릭 시 팝업으로 열리는 화면이 �
 		<input type="reset" value="초기화"/>
 	</c:when>
 	<c:otherwise>
-		<input type="button" value="수정" onclick="inputCheck();"/>
-		<input type="button" value="삭제" onclick="removeCheck(${hibernateList.staffno })"/>
+		<input type="submit" value="수정"/>
+<!-- 		<input type="button" value="수정" onclick="inputCheck();"/> -->
+		<input type="button" value="삭제" onclick="removeCheck(${hibernateList.staffno});"/>
 		<input type="hidden" name="staffno" value="${hibernateList.staffno }"/>
 	</c:otherwise>
 	

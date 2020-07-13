@@ -61,6 +61,8 @@ public class HibernateStaffDto {
 	private int startBoardNo;
 	private int endBoardNo;
 
+	
+	private int oldskillcode;
 	/* ================================== 생성자 ================================ */
 
 	
@@ -237,15 +239,27 @@ public class HibernateStaffDto {
 	public void setEndBoardNo(int endBoardNo) {
 		this.endBoardNo = endBoardNo;
 	}
+	
+	
+
+	public int getOldskillcode() {
+		return oldskillcode;
+	}
+
+	public void setOldskillcode(int oldskillcode) {
+		this.oldskillcode = oldskillcode;
+	}
 
 	@Override
 	public String toString() {
-		return "TotalStaffDto [skillcode=" + skillcode + ", skillname=" + skillname + ", skillnameList=" + skillnameList
-				+ ", departmentcode=" + departmentcode + ", departmentname=" + departmentname + ", schoolcode="
-				+ schoolcode + ", schoolname=" + schoolname + ", staffno=" + staffno + ", staffname=" + staffname
-				+ ", staffgender=" + staffgender + ", juminno=" + juminno + ", graduateday=" + graduateday
+		return "HibernateStaffDto [skillcode=" + skillcode + ", skillname=" + skillname + ", skillnameList="
+				+ skillnameList + ", departmentcode=" + departmentcode + ", departmentname=" + departmentname
+				+ ", schoolcode=" + schoolcode + ", schoolname=" + schoolname + ", staffno=" + staffno + ", staffname="
+				+ staffname + ", staffgender=" + staffgender + ", juminno=" + juminno + ", graduateday=" + graduateday
 				+ ", graduatedayList=" + graduatedayList + ", staffskillno=" + staffskillno + ", category=" + category
-				+ ", keyword=" + keyword + ", startBoardNo=" + startBoardNo + ", endBoardNo=" + endBoardNo + "]";
+				+ ", keyword=" + keyword + ", startBoardNo=" + startBoardNo + ", endBoardNo=" + endBoardNo
+				+ ", oldskillcode=" + oldskillcode + "]";
 	}
 
+	
 }

@@ -1,5 +1,6 @@
 package com.nd.assignment.ndboard.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -41,6 +42,13 @@ public class TotalStaffDaoImpl implements TotalStaffDao {
 	public TotalStaffDto selectOne(int staffno) {
 		logger.info("[DaoImpl]____selectOne입니다. staffno >>> " + staffno);
 		return sqlSession.selectOne(NAMESPACE+"selectOne", staffno);
+	}
+
+	@Override
+	public List<TotalStaffDto> selectListOne(int staffno) {
+		List<TotalStaffDto> list = new ArrayList<TotalStaffDto>();
+		list = sqlSession.selectList(NAMESPACE+"selectListOne", staffno);
+		return list;
 	}
 
 

@@ -18,4 +18,9 @@ public interface TotalStaffBiz {
 	
 	// 글 하나만 보기
 	public TotalStaffDto selectOne(int staffno);
+	
+	// 글번호로 리스트뽑아오기
+	public List<TotalStaffDto> selectListOne(int staffno);
+	
+	
 }

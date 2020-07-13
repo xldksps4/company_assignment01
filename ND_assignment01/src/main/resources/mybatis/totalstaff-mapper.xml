@@ -235,6 +235,19 @@
 		WHERE SF.STAFF_NO = #{staffno}
   	</select>
   
+  	<select id="selectListOne" parameterType="int" resultMap="totalstaffMap" >
+		SELECT CS.SKILL_CODE, CS.SKILL_NAME, CD.DEPARTMENT_CODE, CD.DEPARTMENT_NAME, 
+		CSL.SCHOOL_CODE, CSL.SCHOOL_NAME, SF.STAFF_NO, 
+		SF.STAFF_NAME, SF.STAFF_GENDER, SF.JUMIN_NO, SF.GRADUATE_DAY, SS.STAFF_SKILL_NO
+		FROM STAFF SF 
+		LEFT OUTER JOIN STAFF_SKILL SS ON SF.STAFF_NO = SS.STAFF_NO
+	   	JOIN CODE_SKILL CS ON SS.SKILL_CODE = CS.SKILL_CODE
+		LEFT OUTER JOIN CODE_DEPARTMENT CD ON SF.DEPARTMENT_CODE = CD.DEPARTMENT_CODE
+		LEFT OUTER JOIN CODE_SCHOOL CSL ON SF.SCHOOL_CODE = CSL.SCHOOL_CODE
+		WHERE SF.STAFF_NO = #{staffno}
+  	</select>
+  
+  
   	<select id="selectJumin" parameterType="HibernateStaffDto" resultMap="HibernateMap">
   		SELECT * FROM STAFF WHERE JUMIN_NO = #{juminno}
   	</select>
@@ -268,11 +281,49 @@
 		AND JUMIN_NO = #{juminno}
   	</update>
   	
-  	
   	<update id="updateStaffTwo" parameterType="HibernateStaffDto">
-	  			UPDATE STAFF_SKILL SET 
-				SKILL_CODE = (SELECT SKILL_CODE FROM CODE_SKILL WHERE SKILL_NAME = #{skillname})
-				WHERE STAFF_NO = (SELECT STAFF_NO FROM STAFF WHERE STAFF_NAME=#{staffname} AND JUMIN_NO=#{juminno})
+	  	UPDATE STAFF_SKILL SET 
+		SKILL_CODE = #{skillcode}
+		WHERE STAFF_NO = #{staffno}
+		AND STAFF_SKILL_NO = (SELECT STAFF_SKILL_NO FROM STAFF_SKILL WHERE STAFF_NO= #{staffno} AND SKILL_CODE = #{oldskillcode})
+  	</update>
+  	
+  	<update id="updateStaffTwo_before" parameterType="HibernateStaffDto">
+	  	UPDATE STAFF_SKILL SET 
+		SKILL_CODE = (SELECT SKILL_CODE FROM CODE_SKILL WHERE SKILL_NAME = #{skillname})
+		WHERE STAFF_NO = (SELECT STAFF_NO FROM STAFF WHERE STAFF_NAME=#{staffname} AND JUMIN_NO=#{juminno})
+  	</update>
+  	
+  	<update id="updateStaffTwoTwo" parameterType="HibernateStaffDto">
+  		UPDATE STAFF_SKILL SET 
+		SKILL_CODE = (SELECT SKILL_CODE FROM CODE_SKILL WHERE SKILL_NAME IN
+  		<foreach collection="skillnameList" item="skillnameOne" open="(" separator="," close=")"> <!-- ==> (1,2,3) -->
+  		#{skillnameOne}
+  		</foreach>		
+  		)
+  		WHERE STAFF_NO = (SELECT STAFF_NO FROM STAFF WHERE STAFF_NAME=#{staffname} AND JUMIN_NO=#{juminno})
+  	</update>
+  	
+  	
+  	
+  	<update id="updateT_fail" parameterType="HibernateStaffDto">
+  			{call
+			declare
+			begin
+				UPDATE STAFF SET 
+				STAFF_NAME = #{staffname},
+				JUMIN_NO = #{juminno},
+				SCHOOL_CODE = (SELECT SCHOOL_CODE FROM CODE_SCHOOL WHERE SCHOOL_NAME = #{schoolname}),
+				DEPARTMENT_CODE = (SELECT DEPARTMENT_CODE FROM CODE_DEPARTMENT WHERE DEPARTMENT_NAME = #{departmentname})
+				WHERE STAFF_NAME = #{staffname}
+				AND JUMIN_NO = #{juminno};
+				UPDATE STAFF_SKILL SET 
+		SKILL_CODE = (SELECT SKILL_CODE FROM CODE_SKILL WHERE SKILL_NAME = #{skillname})
+		WHERE STAFF_NO = (SELECT STAFF_NO FROM STAFF WHERE STAFF_NAME=#{staffname} AND JUMIN_NO=#{juminno});
+			end
+		}
+  	
+  	
   	</update>
   	
   	<delete id="deleteOne" parameterType="int">
