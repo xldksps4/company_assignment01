@@ -60,16 +60,12 @@
 					#{skillnameOne}					
 				</foreach>
 			</if>
-			<if test='graduatedayList != "" and graduatedayList != null'>
-				<foreach collection="graduatedayList" item="graduatedayOne">
-					<if test = 'index = 0'>
-						AND SF.graduate_day <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
+					<if test='startDate != "" and startDate != null'>
+							AND SF.graduate_day <![CDATA[>=]]> TO_DATE(#{startDate},'YYYY-MM-DD')
 					</if>
-					<if test = 'index = 1'>
-						AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
+					<if test='endDate != "" and endDate != null'>
+							AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{endDate},'YYYY-MM-DD')
 					</if>
-				</foreach>
-			</if>
 			<if test="category == 'AND' and keyword != null and keyword != ''">
 				AND CS.skill_name LIKE ('%' || #{keyword} || '%')
 			</if>
@@ -111,15 +107,11 @@
 							#{skillnameOne}					
 						</foreach>
 					</if>
-					<if test='graduatedayList != "" and graduatedayList != null'>
-						<foreach collection="graduatedayList" item="graduatedayOne">
-							<if test = 'index = 0'>
-								AND A.graduate_day <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
-							</if>
-							<if test = 'index = 1'>
-								AND A.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
-							</if>
-						</foreach>
+					<if test='startDate != "" and startDate != null'>
+							AND SF.graduate_day <![CDATA[>=]]> TO_DATE(#{startDate},'YYYY-MM-DD')
+					</if>
+					<if test='endDate != "" and endDate != null'>
+							AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{endDate},'YYYY-MM-DD')
 					</if>
 					<if test="category == 'AND' and keyword != null and keyword != ''">
 						AND CS.skill_name LIKE ('%' || #{keyword} || '%')
@@ -163,15 +155,11 @@
 							#{skillnameOne}					
 						</foreach>
 					</if>
-					<if test='graduatedayList != "" and graduatedayList != null'>
-						<foreach collection="graduatedayList" item="graduatedayOne">
-							<if test = 'index = 0'>
-								AND SF.graduate_day <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
-							</if>
-							<if test = 'index = 1'>
-								AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
-							</if>
-						</foreach>
+					<if test='startDate != "" and startDate != null'>
+							AND SF.graduate_day <![CDATA[>=]]> TO_DATE(#{startDate},'YYYY-MM-DD')
+					</if>
+					<if test='endDate != "" and endDate != null'>
+							AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{endDate},'YYYY-MM-DD')
 					</if>
 					<if test="category == 'AND' and keyword != null and keyword != ''">
 						AND CS.skill_name LIKE ('%' || #{keyword} || '%')
@@ -215,23 +203,11 @@
 							#{skillnameOne}					
 						</foreach>
 					</if>
-					<if test='graduatedayList != "" and graduatedayList != null'>
-						<foreach collection="graduatedayList" item="graduatedayOne">
-							<if test = 'index = 0'>
-								AND SF.graduate_day <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
-							</if>
-							<if test = 'index = 1'>
-								AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
-							</if>
-						</foreach>
-						<foreach collection="graduatedayList" item="graduatedayOne">
-							<if test = 'index = 0'>
-								AND SF.graduate_day <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
-							</if>
-							<if test = 'index = 1'>
-								AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
-							</if>
-						</foreach>
+					<if test='startDate != "" and startDate != null'>
+							AND SF.graduate_day <![CDATA[>=]]> TO_DATE(#{startDate},'YYYY-MM-DD')
+					</if>
+					<if test='endDate != "" and endDate != null'>
+							AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{endDate},'YYYY-MM-DD')
 					</if>
 					<if test="category == 'AND' and keyword != null and keyword != ''">
 						AND CS.skill_name LIKE ('%' || #{keyword} || '%')

@@ -52,12 +52,12 @@ function totalDate() {
 
 			let hidden_start = document.createElement("input")
 			hidden_start.setAttribute("type", "hidden")
-			hidden_start.setAttribute("name", "graduatedayList")
+			hidden_start.setAttribute("name", "startDate")
 			hidden_start.value = startDate
 
 			let hidden_end = document.createElement("input")
 			hidden_end.setAttribute("type", "hidden")
-			hidden_end.setAttribute("name", "graduatedayList")
+			hidden_end.setAttribute("name", "endDate")
 			hidden_end.value = endDate
 
 			form.appendChild(hidden_start)
