@@ -63,10 +63,10 @@
 			<if test='graduatedayList != "" and graduatedayList != null'>
 				<foreach collection="graduatedayList" item="graduatedayOne">
 					<if test = 'index = 0'>
-						AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+						AND SF.graduate_day <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
 					</if>
 					<if test = 'index = 1'>
-						AND SF.graduate_day  <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+						AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
 					</if>
 				</foreach>
 			</if>
@@ -114,10 +114,10 @@
 					<if test='graduatedayList != "" and graduatedayList != null'>
 						<foreach collection="graduatedayList" item="graduatedayOne">
 							<if test = 'index = 0'>
-								AND A.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+								AND A.graduate_day <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
 							</if>
 							<if test = 'index = 1'>
-								AND A.graduate_day  <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+								AND A.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
 							</if>
 						</foreach>
 					</if>
@@ -166,10 +166,10 @@
 					<if test='graduatedayList != "" and graduatedayList != null'>
 						<foreach collection="graduatedayList" item="graduatedayOne">
 							<if test = 'index = 0'>
-								AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+								AND SF.graduate_day <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
 							</if>
 							<if test = 'index = 1'>
-								AND SF.graduate_day  <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+								AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
 							</if>
 						</foreach>
 					</if>
@@ -218,10 +218,18 @@
 					<if test='graduatedayList != "" and graduatedayList != null'>
 						<foreach collection="graduatedayList" item="graduatedayOne">
 							<if test = 'index = 0'>
-								AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+								AND SF.graduate_day <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
 							</if>
 							<if test = 'index = 1'>
-								AND SF.graduate_day  <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'yy-MM-dd')
+								AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
+							</if>
+						</foreach>
+						<foreach collection="graduatedayList" item="graduatedayOne">
+							<if test = 'index = 0'>
+								AND SF.graduate_day <![CDATA[>=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
+							</if>
+							<if test = 'index = 1'>
+								AND SF.graduate_day <![CDATA[<=]]> TO_DATE(#{graduatedayOne},'YYYY-MM-DD')
 							</if>
 						</foreach>
 					</if>

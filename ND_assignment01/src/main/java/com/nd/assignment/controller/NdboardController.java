@@ -46,7 +46,7 @@ public class NdboardController {
 	public String goBoardList(Model model, TotalStaffDto totalstaffDto,
 			@RequestParam(value = "currentPage", defaultValue = "0") int currentPage) {
 		logger.info("[Controller]____goBoardList TotalStaffDto >>>> : " + totalstaffDto);
-		logger.info("[\" :>>>> \", currentPage]" + currentPage);
+		logger.info("[Controller]__ currentPage >>>>" + currentPage);
 		if (currentPage < 1) {
 			logger.info("[Controller]____goBoardList 첫 화면 집입");
 			return "staff_search_form";
@@ -139,8 +139,8 @@ public class NdboardController {
 
 	// 글 수정 완료
 	@RequestMapping(value = "/inputstaff.do")
-	public String inputStaff(Model model, @ModelAttribute("hibernateList") @Valid HibernateStaffDto hibernateList,
-			BindingResult result) {
+	public String inputStaff(Model model, @ModelAttribute("hibernateList") 
+		@Valid HibernateStaffDto hibernateList, BindingResult result) {
 		logger.info("[Controller]____inputStaff입니다. dto값 >>>>" + hibernateList);
 
 		if (result.hasErrors()) {
@@ -158,7 +158,8 @@ public class NdboardController {
 
 		} else {
 			logger.info("유효성 검사 >>>> 통과  : " + hibernateList);
-
+			
+			
 			// [#1 유효성 검사 이후 ] >>>>> DB에 값 추가전에 [String skillname] => [List<String>
 			// skillnameList]
 			if (hibernateList.getSkillname() != null) {

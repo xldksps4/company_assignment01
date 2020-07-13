@@ -15,7 +15,12 @@ function paging(curPage) {
 }
 
 
-
+function boardWrite() {
+//	var curPage = document.getElementsByClassName('paging-focus').text;  // 쿼리 : $('.paging-focus').text();
+	let url= "goboardwrite.do"
+	let option = "width = 800x, height = 300px"
+	window.open(url, "", option);
+}
 
 
 
@@ -24,8 +29,8 @@ function paging(curPage) {
 /*---------- 상세글보기 : boardDetail func ----------*/
 function boardUpdate(staffno) {
 //	var curPage = document.getElementsByClassName('paging-focus').text;  // 쿼리 : $('.paging-focus').text();
-	var url= "goboardupdate.do?staffno="+staffno;
-	var option = "width = 800x, height = 300px"
+	let url= "goboardupdate.do?staffno="+staffno;
+	let option = "width = 800x, height = 300px"
 	window.open(url, "", option);
 }
 

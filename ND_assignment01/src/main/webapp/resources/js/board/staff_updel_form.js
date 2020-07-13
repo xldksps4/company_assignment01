@@ -172,6 +172,22 @@ function removeCheck(staffno){
 	}
 }
 
+function inputCheck(){
+	if(confirm('정말 저장하시겠습니까?')== true){
+		console.log('inputCheck(), 파라미터 데이터 확인 할건 없음')
+		
+		let form = document.getElementById("hibernateList")
+		
+		form.submit();
+		console.log('저장선공')
+		window.open('about:blank','_self').close();
+	
+	}else{
+		console.log('저장실패')
+		return false;
+	}
+}
+
 
 
 
